@@ -25,4 +25,8 @@ public class Utils {
         }
         return false;
     }
+
+    public static boolean isDirectLinkImage(String image){
+        return image.endsWith(".jpg") || image.endsWith(".png") || image.endsWith(".bmp");
+    }
 }

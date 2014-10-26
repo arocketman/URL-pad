@@ -17,12 +17,13 @@ public class PageEntry {
     String Name;
     String Description;
     Date DateAdded;
-    BufferedImage pageSnapshot;
+    String pageSnapshot;
     MainController controller;
 
     public PageEntry(String URLstr,MainController controller){
         this.URL = URLstr;
         this.controller = controller;
+        this.pageSnapshot = "";
         Thread workerThread = new Thread(new Worker());
         workerThread.start();
     }
@@ -38,10 +39,19 @@ public class PageEntry {
         this.DateAdded = Calendar.getInstance().getTime();
         //Getting description
         Description = doc.select("p").first().text();
-        //Getting the images.
+        //Getting the images , gets the first valid image (check isValidUrl function in utils class).
         Elements images = doc.select("img");
         //TODO: MAKE THE USER DECIDE WHICH IMAGE?
-        //pageSnapshot = ImageIO.read(images.get(0).attr("src"));
+        if(!images.isEmpty()){
+            pageSnapshot = "octopus.png";
+            for(Element image : images){
+                if(Utils.isValidURL(image.attr("src"))){
+                    pageSnapshot = image.attr("src");
+                    break;
+                }
+
+            }
+        }
     }
 
     public String getURL() {
@@ -68,11 +78,11 @@ public class PageEntry {
         DateAdded = dateAdded;
     }
 
-    public BufferedImage getPageSnapshot() {
+    public String getPageSnapshot() {
         return pageSnapshot;
     }
 
-    public void setPageSnapshot(BufferedImage pageSnapshot) {
+    public void setPageSnapshot(String pageSnapshot) {
         this.pageSnapshot = pageSnapshot;
     }
 

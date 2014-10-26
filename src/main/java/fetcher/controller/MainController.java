@@ -43,7 +43,6 @@ public class MainController implements Initializable {
             }
         });
         listURL.setItems(listItems);
-
     }
 
     /**
@@ -79,7 +78,5 @@ public class MainController implements Initializable {
             }
         }
     }
-
-
 
 }
