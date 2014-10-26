@@ -55,21 +55,22 @@ public class MainController implements Initializable {
             @Override
             public void run() {
                 listItems.add(entry);
-            }
-        });
-
     }
+});
 
-    class HandleClipboardChange implements EventHandler<ActionEvent> {
-
-        String currentString;
-
-        public HandleClipboardChange() {
-            if (clipboard.hasString()) currentString = clipboard.getString();
-            else currentString = "";
         }
 
-        @Override
+
+class HandleClipboardChange implements EventHandler<ActionEvent> {
+
+    String currentString;
+
+    public HandleClipboardChange() {
+        if (clipboard.hasString()) currentString = clipboard.getString();
+        else currentString = "";
+    }
+
+    @Override
         public void handle(ActionEvent event) {
             String clipBoardStatus = clipboard.getString();
             if (clipboard.hasString() && !clipBoardStatus.equals(currentString) && Utils.isValidURL(clipBoardStatus)) {

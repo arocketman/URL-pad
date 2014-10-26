@@ -24,6 +24,7 @@ public class PageEntry {
         this.URL = URLstr;
         this.controller = controller;
         this.pageSnapshot = "";
+        this.Description = "";
         Thread workerThread = new Thread(new Worker());
         workerThread.start();
     }
@@ -38,7 +39,8 @@ public class PageEntry {
         this.Name = doc.title();
         this.DateAdded = Calendar.getInstance().getTime();
         //Getting description
-        Description = doc.select("p").first().text();
+        if(doc.select("p").first() != null)
+            Description = doc.select("p").first().text();
         //Getting the images , gets the first valid image (check isValidUrl function in utils class).
         Elements images = doc.select("img");
         //TODO: MAKE THE USER DECIDE WHICH IMAGE?
