@@ -14,14 +14,15 @@ URL pad is a link fetcher and saver. It is used to store your links as you copy 
 
 # Dependencies 
 
-JSOUP. Using Maven : 
+jsoup. Using Maven : 
 
-<dependency>
-  <!-- jsoup HTML parser library @ http://jsoup.org/ -->
+```
+ <dependency>
   <groupId>org.jsoup</groupId>
   <artifactId>jsoup</artifactId>
   <version>1.8.1</version>
-</dependency>
+ </dependency>
+```
 
 # Pull requests and issues
 
