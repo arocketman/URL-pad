@@ -60,8 +60,20 @@ public class MainController implements Initializable {
 
         }
 
+    /**
+     * Checks if there's a duplicate link
+     * @param clipBoardStatus the URL copied inside the clipboard
+     * @return true if already in the list
+     */
+    private boolean EntryAlreadyExists(String clipBoardStatus) {
+        for(PageEntry entry : listItems){
+            if(entry.getURL().equalsIgnoreCase(clipBoardStatus)) return true;
+        }
+        return false;
+    }
 
-class HandleClipboardChange implements EventHandler<ActionEvent> {
+
+    class HandleClipboardChange implements EventHandler<ActionEvent> {
 
     String currentString;
 
@@ -75,9 +87,13 @@ class HandleClipboardChange implements EventHandler<ActionEvent> {
             String clipBoardStatus = clipboard.getString();
             if (clipboard.hasString() && !clipBoardStatus.equals(currentString) && Utils.isValidURL(clipBoardStatus)) {
                 this.currentString = clipBoardStatus;
-                PageEntry entry = new PageEntry(clipBoardStatus,MainController.this);
+                if(!EntryAlreadyExists(clipBoardStatus)) {
+                    PageEntry entry = new PageEntry(clipBoardStatus, MainController.this);
+                }
             }
         }
     }
+
+
 
 }
