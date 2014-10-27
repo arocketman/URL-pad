@@ -1,0 +1,12 @@
+#title{
+	-fx-font-size:26px;
+	-fx-font-weight:bold;
+}
+
+#description{
+	-fx-font-size: 16px;
+}
+
+#hbox{
+	-fx-background-color: #EEEEEE;
+}

@@ -54,7 +54,7 @@ public class MainController implements Initializable {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                listItems.add(entry);
+                    listItems.add(entry);
     }
 });
 

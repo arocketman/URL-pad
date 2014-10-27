@@ -3,6 +3,7 @@ package fetcher.model;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 public class Utils {
@@ -14,16 +15,13 @@ public class Utils {
     public static boolean isValidURL(String URL_String) {
         try {
             URL url = new URL(URL_String);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("HEAD");
-            if (connection.getResponseCode() == 200) return true;
+            url.toURI();
         } catch (MalformedURLException e) {
-            //URL is just invalid, we'll return false.
             return false;
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            return false;
         }
-        return false;
+        return true;
     }
 
     public static boolean isDirectLinkImage(String image){
