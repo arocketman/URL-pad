@@ -24,6 +24,10 @@ public class EntryCell extends ListCell<PageEntry> {
     Label description;
     @FXML
     ImageView imageView;
+    @FXML
+    Label date;
+    @FXML
+    Label urllbl;
 
     /**
      * Constructor for EntryCell . The structure is a Horizontal box that has inside a picture and a vertical box. Inside the vertical box we have the title and the description.
@@ -52,7 +56,9 @@ public class EntryCell extends ListCell<PageEntry> {
             setText(null);
         }
         else{
+            date.setText("Added on : " + item.getDateAdded().toString());
             title.setText(item.getName());
+            urllbl.setText(item.getURL());
             description.setText(item.getDescription());
             Image image;
             if(item.getPageSnapshot().isEmpty()){

@@ -1,12 +1,33 @@
+.label[
+    -fx-padding:3;
+}
+
+#listURL{
+    -fx-background-color: #18298C;
+}
+
 #title{
 	-fx-font-size:26px;
 	-fx-font-weight:bold;
+}
+
+#urllbl{
+    -fx-font-size:11px;
+    -fx-font-style:italic;
+}
+
+#date{
+    -fx-font-size:12px;
 }
 
 #description{
 	-fx-font-size: 16px;
 }
 
-#hbox{
-	-fx-background-color: #EEEEEE;
+.list-cell:even{
+    -fx-background-color: #93A6CE;
+}
+
+.list-cell:odd{
+    -fx-background-color: #C9C7BF;
 }
