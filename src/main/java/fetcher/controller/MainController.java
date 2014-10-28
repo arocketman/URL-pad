@@ -50,11 +50,10 @@ public class MainController implements Initializable {
      * @param entry the entry to be added to the listview.
      */
     public void notifyControllerNewEntry(final PageEntry entry){
-
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                    listItems.add(entry);
+                listItems.add(entry);
     }
 });
 

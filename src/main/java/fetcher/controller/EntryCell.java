@@ -47,15 +47,19 @@ public class EntryCell extends ListCell<PageEntry> {
     @Override
     protected void updateItem(PageEntry item, boolean empty) {
         super.updateItem(item, empty);
-        if(!empty){
+        if(empty){
+            setGraphic(null);
+            setText(null);
+        }
+        else{
             title.setText(item.getName());
             description.setText(item.getDescription());
             Image image;
             if(item.getPageSnapshot().isEmpty()){
-               image = new Image("octopus.png" , 150 , 150, false , false );
+                image = new Image("octopus.png" , 150 , 150, false , false );
             }
             else{
-               image = new Image(item.getPageSnapshot(), 150 , 150, false , false );
+                image = new Image(item.getPageSnapshot(), 150 , 150, false , false );
             }
             imageView.setImage(image);
             setGraphic(hbox);
