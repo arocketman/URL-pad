@@ -81,15 +81,6 @@ public class EntryCell extends ListCell<PageEntry> {
     }
 
     class mouseClickedHandler implements EventHandler<MouseEvent>{
-        URI ToOpen;
-        public mouseClickedHandler() {
-            try {
-                this.ToOpen = new URI(urllbl.getText());
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            }
-        }
-
         /**
          * Opens up the default browser to open the url of the selected entry. Only works if double-clicked.
          * @param event
@@ -99,8 +90,11 @@ public class EntryCell extends ListCell<PageEntry> {
             if(event.getClickCount() == 2) {
                 if (Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
                     try {
-                        Desktop.getDesktop().browse(ToOpen);
+                        Desktop.getDesktop().browse(new URI(urllbl.getText()));
                     } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (URISyntaxException e) {
+                        //TODO: Tell the user the URL is probably wrong.
                         e.printStackTrace();
                     }
                 }
