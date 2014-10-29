@@ -40,6 +40,7 @@ public class MainController implements Initializable {
             @Override
             public ListCell<PageEntry> call(ListView<PageEntry> param) {
                 return new EntryCell();
+
             }
         });
         listURL.setItems(listItems);

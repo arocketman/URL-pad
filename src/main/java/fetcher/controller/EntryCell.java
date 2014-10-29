@@ -1,16 +1,21 @@
 package fetcher.controller;
 
 import fetcher.model.PageEntry;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import java.awt.Desktop;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 
 public class EntryCell extends ListCell<PageEntry> {
@@ -43,6 +48,8 @@ public class EntryCell extends ListCell<PageEntry> {
         }
     }
 
+
+
     /**
      * This is used to update a cell entry.
      * @param item the PageEntry that is being inserted / updated
@@ -69,6 +76,35 @@ public class EntryCell extends ListCell<PageEntry> {
             }
             imageView.setImage(image);
             setGraphic(hbox);
+            this.setOnMouseClicked(new mouseClickedHandler());
+        }
+    }
+
+    class mouseClickedHandler implements EventHandler<MouseEvent>{
+        URI ToOpen;
+        public mouseClickedHandler() {
+            try {
+                this.ToOpen = new URI(urllbl.getText());
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        }
+
+        /**
+         * Opens up the default browser to open the url of the selected entry. Only works if double-clicked.
+         * @param event
+         */
+        @Override
+        public void handle(MouseEvent event) {
+            if(event.getClickCount() == 2) {
+                if (Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+                    try {
+                        Desktop.getDesktop().browse(ToOpen);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         }
     }
 }
