@@ -81,14 +81,14 @@ public class EntryCell extends ListCell<PageEntry> {
     }
 
     class mouseClickedHandler implements EventHandler<MouseEvent>{
+
         /**
          * Opens up the default browser to open the url of the selected entry. Only works if double-clicked.
          * @param event
          */
         @Override
         public void handle(MouseEvent event) {
-            if(event.getClickCount() == 2) {
-                if (Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+            if(event.getClickCount() == 2 && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
                     try {
                         Desktop.getDesktop().browse(new URI(urllbl.getText()));
                     } catch (IOException e) {
@@ -97,8 +97,8 @@ public class EntryCell extends ListCell<PageEntry> {
                         //TODO: Tell the user the URL is probably wrong.
                         e.printStackTrace();
                     }
-                }
             }
         }
     }
+
 }
