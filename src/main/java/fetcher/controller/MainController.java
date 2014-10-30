@@ -11,9 +11,13 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
+import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
 import javafx.util.Duration;
 import java.net.URL;
@@ -25,6 +29,11 @@ public class MainController implements Initializable {
     @FXML
     private ListView<PageEntry> listURL;
     final ObservableList<PageEntry> listItems = FXCollections.observableArrayList();
+
+    @FXML
+    private Button addBtn;
+    @FXML
+    private Button deleteBtn;
 
     public MainController(){
         clipboard = Clipboard.getSystemClipboard();
@@ -44,6 +53,18 @@ public class MainController implements Initializable {
             }
         });
         listURL.setItems(listItems);
+        Image imageAdd = new Image(getClass().getResourceAsStream("/plus.png"));
+        addBtn.setGraphic(new ImageView(imageAdd));
+
+        Image imageDelete = new Image(getClass().getResourceAsStream("/delete.png"));
+        deleteBtn.setGraphic(new ImageView(imageDelete));
+        deleteBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                int index = listURL.getSelectionModel().getSelectedIndex();
+                listItems.remove(index);
+            }
+        });
     }
 
     /**
