@@ -31,9 +31,10 @@ public class MainController implements Initializable {
     final ObservableList<PageEntry> listItems = FXCollections.observableArrayList();
 
     @FXML
-    private Button addBtn;
+    private Button saveBtn;
     @FXML
     private Button deleteBtn;
+
 
     public MainController(){
         clipboard = Clipboard.getSystemClipboard();
@@ -53,8 +54,6 @@ public class MainController implements Initializable {
             }
         });
         listURL.setItems(listItems);
-        //Image imageAdd = new Image(getClass().getResourceAsStream("/plus.png"));
-        //addBtn.setGraphic(new ImageView(imageAdd));
 
         Image imageDelete = new Image(getClass().getResourceAsStream("/delete.png"));
         deleteBtn.setGraphic(new ImageView(imageDelete));
@@ -65,6 +64,18 @@ public class MainController implements Initializable {
                 listItems.remove(index);
             }
         });
+
+
+        Image imageSave = new Image(getClass().getResourceAsStream("/save.png"));
+        saveBtn.setGraphic(new ImageView(imageSave));
+        saveBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                Utils.savePad(listItems);
+            }
+        });
+
+        if(Utils.savedPadExists())Utils.loadPad(listItems,this);
     }
 
     /**

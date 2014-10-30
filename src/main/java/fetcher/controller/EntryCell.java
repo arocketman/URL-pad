@@ -16,6 +16,7 @@ import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Date;
 
 
 public class EntryCell extends ListCell<PageEntry> {

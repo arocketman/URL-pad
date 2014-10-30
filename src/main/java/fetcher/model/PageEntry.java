@@ -1,16 +1,17 @@
 package fetcher.model;
 
+import com.google.gson.JsonObject;
 import fetcher.controller.MainController;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class PageEntry {
     String URL;
@@ -95,6 +96,18 @@ public class PageEntry {
     public void setDescription(String description) {
         Description = description;
     }
+
+    public JsonObject saveEntry(){
+        JsonObject savedJson = new JsonObject();
+        savedJson.addProperty("URL",URL);
+        savedJson.addProperty("Name",Name);
+        savedJson.addProperty("Description",Description);
+        savedJson.addProperty("DateAdded", new SimpleDateFormat("dd MMMM yy , hh:mm:ss" , Locale.getDefault()).format(this.DateAdded));
+        savedJson.addProperty("pageSnapshot",pageSnapshot);
+        return savedJson;
+    }
+
+
 
     class Worker implements Runnable{
 
