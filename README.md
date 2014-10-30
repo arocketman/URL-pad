@@ -3,14 +3,18 @@ URL-pad
 
 URL pad is a link fetcher and saver. It is used to store your links as you copy them and to retrieve them in the future.
 
-# Features ( To be implemented ) 
+# Features 
 
 * Automatic link saving from clipboard.
+
+# TODO 
+
 * Save a snapshot or image of the page along with its name and description.
 * Save the pad onto the hard drive through json.
 * Lock a pad and secure it with a password.
 * Possibility to add custom notes on a saved url.
 * Background mode, the program won't bother you at every link being saved.
+* Sort links by categories.
 
 # Dependencies 
 

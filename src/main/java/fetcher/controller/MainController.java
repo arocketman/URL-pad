@@ -53,8 +53,8 @@ public class MainController implements Initializable {
             }
         });
         listURL.setItems(listItems);
-        Image imageAdd = new Image(getClass().getResourceAsStream("/plus.png"));
-        addBtn.setGraphic(new ImageView(imageAdd));
+        //Image imageAdd = new Image(getClass().getResourceAsStream("/plus.png"));
+        //addBtn.setGraphic(new ImageView(imageAdd));
 
         Image imageDelete = new Image(getClass().getResourceAsStream("/delete.png"));
         deleteBtn.setGraphic(new ImageView(imageDelete));

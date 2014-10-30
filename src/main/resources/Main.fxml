@@ -14,7 +14,7 @@
                <children>
                   <HBox alignment="TOP_CENTER" maxHeight="200.0">
                      <children>
-                        <Button fx:id="addBtn" mnemonicParsing="false" text="" />
+                       <!-- <Button fx:id="addBtn" mnemonicParsing="false" text="" /> -->
                         <Button fx:id="deleteBtn" mnemonicParsing="false" text="" />
                      </children>
                      <padding>
