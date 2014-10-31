@@ -1,9 +1,13 @@
+#vbox{
+    -fx-padding:5;
+}
+
 .label[
     -fx-padding:3;
 }
 
 #listURL{
-    -fx-background-color: #18298C;
+    -fx-background-color: #222222;
 }
 
 #title{
@@ -25,9 +29,13 @@
 }
 
 .list-cell:even{
-    -fx-background-color: #93A6CE;
+    -fx-background-color: #efebe8;
 }
 
 .list-cell:odd{
-    -fx-background-color: #C9C7BF;
+    -fx-background-color: #b8c1c0;
+}
+
+.button{
+    -fx-padding:5;
 }

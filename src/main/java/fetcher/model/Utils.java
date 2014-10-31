@@ -33,11 +33,21 @@ public class Utils {
         return true;
     }
 
+    /**
+     * Checks if the image is a direct link one or not.
+     * @param image the string to be checked.
+     * @return true if the string is a direct link image.
+     */
     public static boolean isDirectLinkImage(String image){
         return image.endsWith(".jpg") || image.endsWith(".png") || image.endsWith(".bmp");
     }
 
+    /**
+     * Saves the list of entries onto a json file.
+     * @param list the list of PageEntry to be saved
+     */
     public static void savePad(ObservableList<PageEntry> list){
+        //TODO: Maybe this method should be called by a thread? The program should not close itself if the thread is still active.
         JsonArray arrayOfEntries = new JsonArray();
         for(PageEntry entry : list){
             JsonObject singleEntry = entry.saveEntry();
@@ -55,6 +65,11 @@ public class Utils {
 
     }
 
+    /***
+     * Loads the json file specified by LOCATIONS_FILESAVE onto the list provided by the user.
+     * @param list the list where the content of the json file will be saved.
+     * @param controller the maincontroller, this is used in the class "Worker" in PageEntry, in order to update the list without blocking the program.
+     */
     public static void loadPad(ObservableList<PageEntry> list , MainController controller){
         JsonParser parser = new JsonParser();
         Reader reader = null;
@@ -66,7 +81,6 @@ public class Utils {
                 PageEntry entry = new PageEntry(JsonObjectEntry.get("URL").getAsString(),controller);
                 entry.setDescription(JsonObjectEntry.get("Description").getAsString());
                 entry.setName(JsonObjectEntry.get("Name").getAsString());
-                entry.setPageSnapshot(JsonObjectEntry.get("pageSnapshot").getAsString());
                 entry.setDateAdded(new SimpleDateFormat("dd MMMM yy , hh:mm:ss" , Locale.getDefault()).parse(JsonObjectEntry.get("DateAdded").getAsString()));
             }
         }
@@ -77,6 +91,10 @@ public class Utils {
         }
     }
 
+    /**
+     * Makes sure that the file LOCATIONS_FILESAVE exists.
+     * @return true if the file exists.
+     */
     public static boolean savedPadExists() {
         return (new File(LOCATIONS_FILESAVE).exists());
     }
