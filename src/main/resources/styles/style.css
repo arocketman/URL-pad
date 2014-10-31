@@ -32,24 +32,26 @@
 	-fx-font-size: 16px;
 }
 
-.list-cell:even{
-    -fx-background-color: #efebe8;
-
-}
-
 .list-cell:filled:hover {
     -fx-background-color: #0093ff;
     -fx-text-fill: white;
 }
 
-.list-cell:selected:focused * {
+#listURLl:selected:focused * {
     -fx-text-fill:#000000;
-}
-
-.list-cell:odd{
-    -fx-background-color: #b8c1c0;
 }
 
 .button{
     -fx-padding:5;
+}
+
+#tags{
+	-fx-font-weight:bold;
+    -fx-text-fill:#000000;
+    -fx-underline:true;
+}
+
+#vBoxtags{
+    -fx-background-color:#DDDDDD;
+    -fx-padding: 5px;
 }

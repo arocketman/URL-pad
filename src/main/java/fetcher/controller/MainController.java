@@ -5,29 +5,33 @@ import fetcher.model.PageEntry;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ContentDisplay;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import javafx.util.Duration;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
 
     Clipboard clipboard;
-    final ObservableList<PageEntry> listItems = FXCollections.observableArrayList();
+    public final ObservableList<PageEntry> listItems = FXCollections.observableArrayList();
+    //TODO: Make this an observable list, so that I can handle them like a list
+    public final ObservableList<String> allTags = FXCollections.observableArrayList();
 
     @FXML
     private ListView<PageEntry> listURL;
@@ -35,7 +39,10 @@ public class MainController implements Initializable {
     private Button saveBtn;
     @FXML
     private Button deleteBtn;
-
+    @FXML
+    private VBox vBoxtags;
+    @FXML
+    private ListView<String> tagsListView;
 
     public MainController(){
         clipboard = Clipboard.getSystemClipboard();
@@ -57,7 +64,7 @@ public class MainController implements Initializable {
             }
         });
         listURL.setItems(listItems);
-
+        tagsListView.setItems(allTags);
         //TODO: I think I can make this whole section a little cleaner by using CSS.
         //Setting up the buttons
         Image imageDelete = new Image(getClass().getResourceAsStream("/images/delete.png"));
@@ -87,6 +94,21 @@ public class MainController implements Initializable {
 
         //Loading the pad if there's a saved one.
         if(Utils.savedPadExists())Utils.loadPad(listItems,this);
+        tagsListView.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                    //Getting the tag.
+                    String filterTag = allTags.get(newValue.intValue());
+                    //Creating the new Observable list based on that value.
+                    ObservableList<PageEntry> entriesWithTag = FXCollections.observableArrayList();
+                    for (PageEntry entry : listItems) {
+                        for (String tag : entry.getTags()) {
+                            if (tag.equals(filterTag)) entriesWithTag.add(entry);
+                        }
+                    }
+                    listURL.setItems(entriesWithTag);
+            }
+        });
     }
 
     /**
@@ -113,6 +135,12 @@ public class MainController implements Initializable {
             if(entry.getURL().equalsIgnoreCase(clipBoardStatus)) return true;
         }
         return false;
+    }
+
+    public void addTag(String tag){
+        if(!Utils.exists(this.allTags,tag)){
+            this.allTags.add(tag);
+        }
     }
 
 

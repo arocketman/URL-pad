@@ -8,6 +8,7 @@ URL pad is a link fetcher and saver. It is used to store your links as you copy 
 
 * Automatic link saving from clipboard.
 * Save the pad onto the hard drive through json.
+* Sort links by tags.
 
 # TODO 
 
@@ -17,7 +18,6 @@ URL pad is a link fetcher and saver. It is used to store your links as you copy 
 * Lock a pad, encrypt it and secure it with a password.
 * Possibility to add custom notes on a saved url.
 * Background mode, the program won't bother you at every link being saved.
-* Sort links by categories.
 
 # Dependencies 
 

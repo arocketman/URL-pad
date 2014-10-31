@@ -20,6 +20,7 @@
                   <Label fx:id="title" text="title" />
                   <Label fx:id="urllbl" text="url" />
                   <Label fx:id="description" text="description" />
+                  <Label fx:id="tags" text="tags" />
                </children>
             </VBox>
          </children>

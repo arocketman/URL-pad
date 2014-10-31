@@ -1,16 +1,18 @@
 package fetcher.model;
 
 import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
 import fetcher.controller.MainController;
 import javafx.collections.ObservableList;
 
 import java.io.*;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class Utils {
@@ -82,6 +84,10 @@ public class Utils {
                 entry.setDescription(JsonObjectEntry.get("Description").getAsString());
                 entry.setName(JsonObjectEntry.get("Name").getAsString());
                 entry.setDateAdded(new SimpleDateFormat("dd MMMM yy , hh:mm:ss" , Locale.getDefault()).parse(JsonObjectEntry.get("DateAdded").getAsString()));
+                ArrayList<String> tags = new Gson().fromJson(JsonObjectEntry.get("Tags"), new TypeToken<List<String>>(){}.getType());
+                for(String tag : tags)
+                    controller.addTag(tag);
+                entry.setTags(tags);
             }
         }
         catch(FileNotFoundException e){
@@ -98,4 +104,25 @@ public class Utils {
     public static boolean savedPadExists() {
         return (new File(LOCATIONS_FILESAVE).exists());
     }
+
+    /**
+     * Checks if an element exists in a given array.
+     * @param array the array to search within
+     * @param element the element we want to search for
+     * @param <T>
+     * @return true if the given element exists in the array.
+     */
+    public static <T> boolean exists(List<T> array , T element){
+        for(T currentElement : array){
+            if(element.equals(currentElement)) return true;
+        }
+        return false;
+    }
+
+   /* public static <T> boolean exists(ObservableList<T> array , T element){
+        for(T currentElement : array){
+            if(element.equals(currentElement)) return true;
+        }
+        return false;
+    }*/
 }

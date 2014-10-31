@@ -1,6 +1,8 @@
 package fetcher.model;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import fetcher.controller.MainController;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -9,6 +11,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -20,12 +23,16 @@ public class PageEntry {
     Date DateAdded;
     String pageSnapshot;
     MainController controller;
+    ArrayList<String> tags;
 
     public PageEntry(String URLstr,MainController controller){
         this.URL = URLstr;
         this.controller = controller;
         this.pageSnapshot = "images/octopus.png";
         this.Description = "";
+        this.tags = new ArrayList<String>();
+        //TODO: This is to 'reset' the filter by tags. Probably needs a better solution
+        tags.add("all");
         Thread workerThread = new Thread(new Worker());
         workerThread.start();
     }
@@ -65,11 +72,15 @@ public class PageEntry {
      */
     public JsonObject saveEntry(){
         JsonObject savedJson = new JsonObject();
+        JsonArray savedTags = new JsonArray();
         savedJson.addProperty("URL",URL);
         savedJson.addProperty("Name",Name);
         savedJson.addProperty("Description",Description);
         savedJson.addProperty("DateAdded", new SimpleDateFormat("dd MMMM yy , hh:mm:ss" , Locale.getDefault()).format(this.DateAdded));
         savedJson.addProperty("pageSnapshot",pageSnapshot);
+        for(String tag : tags)
+            savedTags.add(new JsonPrimitive(tag));
+        savedJson.add("Tags",savedTags);
         return savedJson;
     }
 
@@ -111,6 +122,18 @@ public class PageEntry {
 
     public void setDescription(String description) {
         Description = description;
+    }
+
+    public void addTag(String tag){
+        this.tags.add(tag);
+    }
+
+    public ArrayList<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(ArrayList<String> tags) {
+        this.tags = tags;
     }
 
     class Worker implements Runnable{
