@@ -65,8 +65,10 @@ public class MainController implements Initializable {
         deleteBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                int index = listURL.getSelectionModel().getSelectedIndex();
-                listItems.remove(index);
+                if(listItems.size() > 0) {
+                    int index = listURL.getSelectionModel().getSelectedIndex();
+                    listItems.remove(index);
+                }
             }
         });
         deleteBtn.setText("Delete");

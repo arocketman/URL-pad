@@ -24,7 +24,7 @@ public class PageEntry {
     public PageEntry(String URLstr,MainController controller){
         this.URL = URLstr;
         this.controller = controller;
-        this.pageSnapshot = "";
+        this.pageSnapshot = "octopus.png";
         this.Description = "";
         Thread workerThread = new Thread(new Worker());
         workerThread.start();
@@ -49,9 +49,8 @@ public class PageEntry {
         Elements images = doc.select("img");
         //TODO: Make the image search way better, right now it just takes the first image regardless of size and significance.
         if(!images.isEmpty()){
-            pageSnapshot = "octopus.png";
             for(Element image : images){
-                if(Utils.isValidURL(image.attr("src"))){
+                if(Utils.isValidURL(image.attr("src")) && Utils.isDirectLinkImage(image.attr("src"))){
                     pageSnapshot = image.attr("src");
                     break;
                 }
