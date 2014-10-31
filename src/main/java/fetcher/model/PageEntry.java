@@ -24,7 +24,7 @@ public class PageEntry {
     public PageEntry(String URLstr,MainController controller){
         this.URL = URLstr;
         this.controller = controller;
-        this.pageSnapshot = "octopus.png";
+        this.pageSnapshot = "images/octopus.png";
         this.Description = "";
         Thread workerThread = new Thread(new Worker());
         workerThread.start();

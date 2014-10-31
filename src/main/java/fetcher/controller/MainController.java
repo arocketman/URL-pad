@@ -60,7 +60,7 @@ public class MainController implements Initializable {
 
         //TODO: I think I can make this whole section a little cleaner by using CSS.
         //Setting up the buttons
-        Image imageDelete = new Image(getClass().getResourceAsStream("/delete.png"));
+        Image imageDelete = new Image(getClass().getResourceAsStream("/images/delete.png"));
         deleteBtn.setGraphic(new ImageView(imageDelete));
         deleteBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -74,7 +74,7 @@ public class MainController implements Initializable {
         deleteBtn.setText("Delete");
         deleteBtn.setContentDisplay(ContentDisplay.TOP);
         //Button save
-        Image imageSave = new Image(getClass().getResourceAsStream("/save.png"));
+        Image imageSave = new Image(getClass().getResourceAsStream("/images/save.png"));
         saveBtn.setGraphic(new ImageView(imageSave));
         saveBtn.setText("Save");
         saveBtn.setContentDisplay(ContentDisplay.TOP);

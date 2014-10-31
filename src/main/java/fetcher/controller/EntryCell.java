@@ -16,7 +16,6 @@ import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Date;
 
 
 public class EntryCell extends ListCell<PageEntry> {
@@ -70,7 +69,7 @@ public class EntryCell extends ListCell<PageEntry> {
             description.setText(item.getDescription());
             Image image;
             if(item.getPageSnapshot().isEmpty()){
-                image = new Image("octopus.png" , 150 , 150, false , false );
+                image = new Image("images/octopus.png", 150 , 150, false , false );
             }
             else{
                 image = new Image(item.getPageSnapshot(), 150 , 150, false , false );
