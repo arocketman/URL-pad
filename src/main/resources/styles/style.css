@@ -34,6 +34,16 @@
 
 .list-cell:even{
     -fx-background-color: #efebe8;
+
+}
+
+.list-cell:filled:hover {
+    -fx-background-color: #0093ff;
+    -fx-text-fill: white;
+}
+
+.list-cell:selected:focused * {
+    -fx-text-fill:#000000;
 }
 
 .list-cell:odd{
