@@ -143,7 +143,7 @@ public class EntryCell extends ListCell<PageEntry> {
                         String text = textfield.getText();
                         if(!text.isEmpty()) {
                             //Making sure the tag doesn't already exists.
-                            if(!Utils.exists(entry.getTags(),text)) {
+                            if(!entry.getTags().contains(text)) {
                                 entry.addTag(text);
                                 updateTags();
                                 if(!Utils.exists(controller.allTags,text)){

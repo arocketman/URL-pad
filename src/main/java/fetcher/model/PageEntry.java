@@ -11,10 +11,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
+import java.util.*;
 
 public class PageEntry {
     String URL;
@@ -23,18 +20,29 @@ public class PageEntry {
     Date DateAdded;
     String pageSnapshot;
     MainController controller;
-    //TODO: Consider making this a hashset to make calculations faster. Needs further testing with lot of entries.
-    ArrayList<String> tags;
+    HashSet<String> tags;
 
     public PageEntry(String URLstr,MainController controller){
         this.URL = URLstr;
         this.controller = controller;
         this.pageSnapshot = "images/octopus.png";
         this.Description = "";
-        this.tags = new ArrayList<String>();
+        this.tags = new HashSet<String>();
         //TODO: This is to 'reset' the filter by tags (Show all entries) . Probably needs a better solution.
         tags.add("all");
-        Thread workerThread = new Thread(new Worker());
+        Thread workerThread = new Thread(new Worker(true));
+        workerThread.start();
+    }
+
+    /**
+     * Constructor used just when loading from the json file.
+     * @param controller
+     */
+    public PageEntry(MainController controller){
+        this.controller = controller;
+        this.tags = new HashSet<String>();
+        tags.add("all");
+        Thread workerThread = new Thread(new Worker(false));
         workerThread.start();
     }
 
@@ -65,6 +73,7 @@ public class PageEntry {
 
             }
         }
+
     }
 
     /**
@@ -129,19 +138,25 @@ public class PageEntry {
         this.tags.add(tag);
     }
 
-    public ArrayList<String> getTags() {
+    public HashSet<String> getTags() {
         return tags;
     }
 
-    public void setTags(ArrayList<String> tags) {
+    public void setTags(HashSet tags) {
         this.tags = tags;
     }
 
     class Worker implements Runnable{
 
+        boolean loadFromURL;
+
+        public Worker(boolean loadFromUrl){
+            this.loadFromURL = loadFromUrl;
+        }
+
         @Override
         public void run() {
-            loadPage();
+            if(loadFromURL)loadPage();
             controller.notifyControllerNewEntry(PageEntry.this);
         }
     }

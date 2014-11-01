@@ -11,9 +11,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 public class Utils {
     private static final String LOCATIONS_FILESAVE = "pad.json";
@@ -78,11 +76,13 @@ public class Utils {
             JsonArray arrayOfEntries = parser.parse(reader).getAsJsonArray();
             for(JsonElement JsonElementEntry : arrayOfEntries){
                 JsonObject JsonObjectEntry = JsonElementEntry.getAsJsonObject();
-                PageEntry entry = new PageEntry(JsonObjectEntry.get("URL").getAsString(),controller);
+                PageEntry entry = new PageEntry(controller);
+                entry.setURL(JsonObjectEntry.get("URL").getAsString());
                 entry.setDescription(JsonObjectEntry.get("Description").getAsString());
                 entry.setName(JsonObjectEntry.get("Name").getAsString());
+                entry.setPageSnapshot(JsonObjectEntry.get("pageSnapshot").getAsString());
                 entry.setDateAdded(new SimpleDateFormat("dd MMMM yy , hh:mm:ss" , Locale.getDefault()).parse(JsonObjectEntry.get("DateAdded").getAsString()));
-                ArrayList<String> tags = new Gson().fromJson(JsonObjectEntry.get("Tags"), new TypeToken<List<String>>(){}.getType());
+                HashSet<String> tags = new Gson().fromJson(JsonObjectEntry.get("Tags"), new TypeToken<Set<String>>(){}.getType());
                 for(String tag : tags)
                     controller.addTag(tag);
                 entry.setTags(tags);

@@ -191,9 +191,7 @@ public class MainController implements Initializable {
                 listURL.setItems(listItems);
             else {
                 for (PageEntry entry : listItems) {
-                    for (String tag : entry.getTags()) {
-                        if (tag.equals(filterTag)) entriesWithTag.add(entry);
-                    }
+                        if (entry.getTags().contains(filterTag)) entriesWithTag.add(entry);
                 }
                 listURL.setItems(entriesWithTag);
             }
