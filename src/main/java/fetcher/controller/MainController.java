@@ -117,6 +117,17 @@ public class MainController implements Initializable {
             public void handle(MouseEvent event) {
                 if(listItems.size() > 0) {
                     int index = listURL.getSelectionModel().getSelectedIndex();
+                    ObservableList<PageEntry> filterList = listURL.getItems();
+                    if(filterList != listItems){
+                        //If we are here, it means the user is trying to delete an entry from a filtered list, we need to find the index in the "all" list.
+                        for(int i = 0; i < listItems.size(); i++){
+                            if(filterList.get(index).equals(listItems.get(i))){
+                                index = i;
+                                filterList.remove(index);
+                                break;
+                            }
+                        }
+                    }
                     listItems.remove(index);
                 }
             }
@@ -176,12 +187,16 @@ public class MainController implements Initializable {
             String filterTag = allTags.get(newValue.intValue());
             //Creating the new Observable list based on that value.
             ObservableList<PageEntry> entriesWithTag = FXCollections.observableArrayList();
-            for (PageEntry entry : listItems) {
-                for (String tag : entry.getTags()) {
-                    if (tag.equals(filterTag)) entriesWithTag.add(entry);
+            if(filterTag.equals("all"))
+                listURL.setItems(listItems);
+            else {
+                for (PageEntry entry : listItems) {
+                    for (String tag : entry.getTags()) {
+                        if (tag.equals(filterTag)) entriesWithTag.add(entry);
+                    }
                 }
+                listURL.setItems(entriesWithTag);
             }
-            listURL.setItems(entriesWithTag);
         }
     }
 
