@@ -18,12 +18,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import javafx.util.Duration;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
@@ -39,8 +36,6 @@ public class MainController implements Initializable {
     private Button saveBtn;
     @FXML
     private Button deleteBtn;
-    @FXML
-    private VBox vBoxtags;
     @FXML
     private ListView<String> tagsListView;
 
@@ -59,12 +54,59 @@ public class MainController implements Initializable {
         listURL.setCellFactory(new Callback<ListView<PageEntry>, ListCell<PageEntry>>() {
             @Override
             public ListCell<PageEntry> call(ListView<PageEntry> param) {
-                return new EntryCell();
+                return new EntryCell(MainController.this);
 
             }
         });
         listURL.setItems(listItems);
         tagsListView.setItems(allTags);
+        setupButtons();
+        //Loading the pad if there's a saved one.
+        if(Utils.savedPadExists())Utils.loadPad(this);
+        tagsListView.getSelectionModel().selectedIndexProperty().addListener(new ChangeListenerTagsFilter());
+    }
+
+
+
+    /**
+     * Updates the listView with the Entry which was processed by a worker thread from PageEntry class
+     * @param entry the entry to be added to the listview.
+     */
+    public void notifyControllerNewEntry(final PageEntry entry){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                listItems.add(entry);
+    }
+});
+        }
+
+    /**
+     * Checks if there's a duplicate link
+     * @param clipBoardStatus the URL copied inside the clipboard
+     * @return true if already in the list
+     */
+    private boolean EntryAlreadyExists(String clipBoardStatus) {
+        for(PageEntry entry : listItems){
+            if(entry.getURL().equalsIgnoreCase(clipBoardStatus)) return true;
+        }
+        return false;
+    }
+
+    /**
+     * Adds a tag to the array allTags only if it is not a duplicate.
+     * @param tag tag to be added.
+     */
+    public void addTag(String tag){
+        if(!Utils.exists(this.allTags,tag)){
+            this.allTags.add(tag);
+        }
+    }
+
+    /**
+     * Takes care of setting up the buttons (in the upper bar) UI and listeners.
+     */
+    public void setupButtons(){
         //TODO: I think I can make this whole section a little cleaner by using CSS.
         //Setting up the buttons
         Image imageDelete = new Image(getClass().getResourceAsStream("/images/delete.png"));
@@ -91,56 +133,6 @@ public class MainController implements Initializable {
                 Utils.savePad(listItems);
             }
         });
-
-        //Loading the pad if there's a saved one.
-        if(Utils.savedPadExists())Utils.loadPad(listItems,this);
-        tagsListView.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                    //Getting the tag.
-                    String filterTag = allTags.get(newValue.intValue());
-                    //Creating the new Observable list based on that value.
-                    ObservableList<PageEntry> entriesWithTag = FXCollections.observableArrayList();
-                    for (PageEntry entry : listItems) {
-                        for (String tag : entry.getTags()) {
-                            if (tag.equals(filterTag)) entriesWithTag.add(entry);
-                        }
-                    }
-                    listURL.setItems(entriesWithTag);
-            }
-        });
-    }
-
-    /**
-     * Updates the listView with the Entry which was processed by a worker thread from PageEntry class
-     * @param entry the entry to be added to the listview.
-     */
-    public void notifyControllerNewEntry(final PageEntry entry){
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                listItems.add(entry);
-    }
-});
-
-        }
-
-    /**
-     * Checks if there's a duplicate link
-     * @param clipBoardStatus the URL copied inside the clipboard
-     * @return true if already in the list
-     */
-    private boolean EntryAlreadyExists(String clipBoardStatus) {
-        for(PageEntry entry : listItems){
-            if(entry.getURL().equalsIgnoreCase(clipBoardStatus)) return true;
-        }
-        return false;
-    }
-
-    public void addTag(String tag){
-        if(!Utils.exists(this.allTags,tag)){
-            this.allTags.add(tag);
-        }
     }
 
 
@@ -157,7 +149,7 @@ public class MainController implements Initializable {
 
         /**
          * Checks if there's any change in the clipboard. Makes sure the change is a URL, creates a PageEntry based on that URL.
-         * @param event
+         * @param event the mouse click event.
          */
         @Override
         public void handle(ActionEvent event) {
@@ -165,11 +157,31 @@ public class MainController implements Initializable {
             if (clipboard.hasString() && !clipBoardStatus.equals(currentString) && Utils.isValidURL(clipBoardStatus)) {
                 this.currentString = clipBoardStatus;
                 if (!EntryAlreadyExists(clipBoardStatus)) {
-                    PageEntry entry = new PageEntry(clipBoardStatus, MainController.this);
+                    new PageEntry(clipBoardStatus, MainController.this);
                 }
             }
         }
 
+    }
+
+    /**
+     * Takes care of handling the filtering of objects when a different cell in  the listview of tags is selected.
+     */
+    class ChangeListenerTagsFilter implements ChangeListener<Number>{
+
+        @Override
+        public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+            //Getting the tag.
+            String filterTag = allTags.get(newValue.intValue());
+            //Creating the new Observable list based on that value.
+            ObservableList<PageEntry> entriesWithTag = FXCollections.observableArrayList();
+            for (PageEntry entry : listItems) {
+                for (String tag : entry.getTags()) {
+                    if (tag.equals(filterTag)) entriesWithTag.add(entry);
+                }
+            }
+            listURL.setItems(entriesWithTag);
+        }
     }
 
 

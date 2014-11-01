@@ -29,11 +29,10 @@ import java.net.URISyntaxException;
 
 public class EntryCell extends ListCell<PageEntry> {
     PageEntry entry;
+    MainController controller;
 
     @FXML
     HBox hbox;
-    @FXML
-    VBox vbox;
     @FXML
     Label title;
     @FXML
@@ -50,8 +49,9 @@ public class EntryCell extends ListCell<PageEntry> {
     /**
      * Constructor for EntryCell . The structure is a Horizontal box that has inside a picture and a vertical box. Inside the vertical box we have the title and the description.
      */
-    public EntryCell(){
+    public EntryCell(MainController controller){
         super();
+        this.controller = controller;
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/EntryCell.fxml"));
         fxmlLoader.setController(this);
         try {
@@ -95,6 +95,9 @@ public class EntryCell extends ListCell<PageEntry> {
         }
     }
 
+    /**
+     * Updates the UI with all the new added tags.
+     */
     public void updateTags(){
         this.tags.setText("");
         for(String tag : entry.getTags()) {
@@ -132,17 +135,20 @@ public class EntryCell extends ListCell<PageEntry> {
                 vBox.setAlignment(Pos.CENTER);
                 Button ok = new Button("OK");
                 final TextField textfield = new TextField();
-                vBox.getChildren().add(new Label("Tag:"));
-                vBox.getChildren().add(textfield);
-                vBox.getChildren().add(ok);
+                vBox.getChildren().addAll(new Label("Tag:"),textfield,ok);
+                //Handler of the OK pressing button. Gets the tag and adds it to the existing ones if it doesn't already exists.
                 ok.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
-                        if(!textfield.getText().isEmpty()) {
+                        String text = textfield.getText();
+                        if(!text.isEmpty()) {
                             //Making sure the tag doesn't already exists.
-                            if(!Utils.exists(entry.getTags(),textfield.getText())) {
-                                entry.addTag(textfield.getText());
+                            if(!Utils.exists(entry.getTags(),text)) {
+                                entry.addTag(text);
                                 updateTags();
+                                if(!Utils.exists(controller.allTags,text)){
+                                    controller.allTags.add(text);
+                                }
                             }
                             dialogStage.close();
                         }

@@ -49,7 +49,7 @@ public class Utils {
      * @param list the list of PageEntry to be saved
      */
     public static void savePad(ObservableList<PageEntry> list){
-        //TODO: Maybe this method should be called by a thread? The program should not close itself if the thread is still active.
+        //TODO: Maybe this method should be called by a thread? The program should not close itself if the thread is still active. (NEEDS testing with lot of entries).
         JsonArray arrayOfEntries = new JsonArray();
         for(PageEntry entry : list){
             JsonObject singleEntry = entry.saveEntry();
@@ -69,14 +69,12 @@ public class Utils {
 
     /***
      * Loads the json file specified by LOCATIONS_FILESAVE onto the list provided by the user.
-     * @param list the list where the content of the json file will be saved.
      * @param controller the maincontroller, this is used in the class "Worker" in PageEntry, in order to update the list without blocking the program.
      */
-    public static void loadPad(ObservableList<PageEntry> list , MainController controller){
+    public static void loadPad(MainController controller){
         JsonParser parser = new JsonParser();
-        Reader reader = null;
         try {
-            reader = new FileReader(LOCATIONS_FILESAVE);
+            Reader reader = new FileReader(LOCATIONS_FILESAVE);
             JsonArray arrayOfEntries = parser.parse(reader).getAsJsonArray();
             for(JsonElement JsonElementEntry : arrayOfEntries){
                 JsonObject JsonObjectEntry = JsonElementEntry.getAsJsonObject();
@@ -109,7 +107,7 @@ public class Utils {
      * Checks if an element exists in a given array.
      * @param array the array to search within
      * @param element the element we want to search for
-     * @param <T>
+     * @param <T> the generic type.
      * @return true if the given element exists in the array.
      */
     public static <T> boolean exists(List<T> array , T element){
@@ -118,11 +116,4 @@ public class Utils {
         }
         return false;
     }
-
-   /* public static <T> boolean exists(ObservableList<T> array , T element){
-        for(T currentElement : array){
-            if(element.equals(currentElement)) return true;
-        }
-        return false;
-    }*/
 }

@@ -23,6 +23,7 @@ public class PageEntry {
     Date DateAdded;
     String pageSnapshot;
     MainController controller;
+    //TODO: Consider making this a hashset to make calculations faster. Needs further testing with lot of entries.
     ArrayList<String> tags;
 
     public PageEntry(String URLstr,MainController controller){
@@ -31,7 +32,7 @@ public class PageEntry {
         this.pageSnapshot = "images/octopus.png";
         this.Description = "";
         this.tags = new ArrayList<String>();
-        //TODO: This is to 'reset' the filter by tags. Probably needs a better solution
+        //TODO: This is to 'reset' the filter by tags (Show all entries) . Probably needs a better solution.
         tags.add("all");
         Thread workerThread = new Thread(new Worker());
         workerThread.start();
