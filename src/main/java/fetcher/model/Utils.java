@@ -21,7 +21,7 @@ public class Utils {
     /**
      * Opens up a connection with the given URL and returns true if the response code is 200 (success)
      * @param URL_String the URL to test
-     * @return Host reacability
+     * @return Host reachability
      */
     public static boolean isValidURL(String URL_String) {
         try {

@@ -77,6 +77,7 @@ public class MainController implements Initializable {
             @Override
             public void run() {
                 listItems.add(entry);
+                if(allTags.size() == 0) allTags.add("all");
     }
 });
         }
