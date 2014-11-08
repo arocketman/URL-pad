@@ -6,7 +6,7 @@
     -fx-background-color:#123AAF;
 }
 
-.label[
+label[
     -fx-padding:3;
 }
 
@@ -54,4 +54,11 @@
 #vBoxtags{
     -fx-background-color:#DDDDDD;
     -fx-padding: 5px;
+}
+
+TextField{
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-padding: 0;
 }

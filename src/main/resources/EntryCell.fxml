@@ -14,12 +14,12 @@
       <HBox fx:id="hbox">
          <children>
             <ImageView fx:id="imageView" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
-            <VBox fx:id="vbox">
+            <VBox fx:id="vbox" HBox.hgrow="ALWAYS">
                <children>
                   <Label fx:id="date" text="date" />
-                  <Label fx:id="title" text="title" />
+                  <TextField fx:id="title" text="title" />
                   <Label fx:id="urllbl" text="url" />
-                  <Label fx:id="description" text="description" />
+                  <TextField fx:id="description" text="description" />
                   <Label fx:id="tags" text="tags" />
                </children>
             </VBox>

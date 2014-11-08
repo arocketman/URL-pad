@@ -2,6 +2,8 @@ package fetcher.controller;
 
 import fetcher.model.PageEntry;
 import fetcher.model.Utils;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -21,6 +23,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import javax.xml.soap.Text;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
@@ -34,9 +37,9 @@ public class EntryCell extends ListCell<PageEntry> {
     @FXML
     HBox hbox;
     @FXML
-    Label title;
+    TextField title;
     @FXML
-    Label description;
+    TextField description;
     @FXML
     ImageView imageView;
     @FXML
@@ -58,7 +61,9 @@ public class EntryCell extends ListCell<PageEntry> {
             fxmlLoader.load();
         } catch (IOException exception) {
             throw new RuntimeException(exception);
-        }
+    }
+        title.textProperty().addListener(new TextFieldListener("title"));
+        description.textProperty().addListener(new TextFieldListener("description"));
     }
 
 
@@ -159,5 +164,23 @@ public class EntryCell extends ListCell<PageEntry> {
             }
         }
     }
+
+    class TextFieldListener implements ChangeListener<String> {
+
+        String FieldToModify;
+
+        public TextFieldListener(String FieldToModify){
+            this.FieldToModify = FieldToModify;
+        }
+
+        @Override
+        public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+            if(FieldToModify.equalsIgnoreCase("Title"))
+                entry.setName(title.getText());
+            else if(FieldToModify.equalsIgnoreCase("Description"))
+                entry.setDescription(description.getText());
+        }
+    }
+
 
 }
