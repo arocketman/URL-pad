@@ -12,6 +12,21 @@
          <children>
             <VBox fx:id="vboxButtons">
                <children>
+                  <MenuBar>
+                    <menus>
+                      <Menu mnemonicParsing="false" text="File">
+                        <items>
+                          <MenuItem mnemonicParsing="false" text="Save Pad" onAction="#handleSaveMenuButton" />
+                          <MenuItem mnemonicParsing="false" text="Close" onAction="#handleExitMenuButton" />
+                        </items>
+                      </Menu>
+                      <Menu mnemonicParsing="false" text="Edit">
+                        <items>
+                          <MenuItem mnemonicParsing="false" text="Delete" onAction="#handleDeleteMenuButton" />
+                        </items>
+                      </Menu>
+                    </menus>
+                  </MenuBar>
                   <HBox alignment="TOP_CENTER" maxHeight="200.0">
                      <children>
                        <!-- <Button fx:id="addBtn" mnemonicParsing="false" text="" /> -->
@@ -26,7 +41,7 @@
                       <children>
                         <VBox fx:id="vBoxtags" alignment="TOP_LEFT" maxWidth="250.0" minWidth="250.0">
                            <children>
-                              <ListView fx:id="tagsListView" VBox.vgrow="ALWAYS" prefHeight="200.0" prefWidth="200.0" />
+                              <ListView fx:id="tagsListView" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
                            </children></VBox>
                           <ListView fx:id="listURL" style="-fx-padding: 10px;" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" />
                       </children>

@@ -1,3 +1,11 @@
+/**
+ * File name : Utils.java
+ *
+ * The utils class is composed of static methods that are used all throughout the program.
+ * There are both generic utilities methods such as checking if an element is inside an array and specific methods such as saving the pad.
+ *
+ */
+
 package fetcher.model;
 
 import com.google.gson.*;

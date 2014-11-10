@@ -1,3 +1,11 @@
+/**
+ * File name : EntryCell.java
+ *
+ * This class is the controller for the EntryCell.fxml file.
+ * Its main purpose is to react to user interaction with the single entry. (e.g : updating tags ) .
+ * 
+ */
+
 package fetcher.controller;
 
 import fetcher.model.PageEntry;
@@ -64,6 +72,12 @@ public class EntryCell extends ListCell<PageEntry> {
     }
         title.textProperty().addListener(new TextFieldListener("title"));
         description.textProperty().addListener(new TextFieldListener("description"));
+        tags.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                (new mouseClickedHandler()).openAddTagDialog();
+            }
+        });
     }
 
 
@@ -134,33 +148,47 @@ public class EntryCell extends ListCell<PageEntry> {
             }
             //Right click: Add tag to selected item.
             else if(event.getButton() == MouseButton.SECONDARY){
-                final Stage dialogStage = new Stage();
-                dialogStage.initModality(Modality.WINDOW_MODAL);
-                VBox vBox = new VBox();
-                vBox.setAlignment(Pos.CENTER);
-                Button ok = new Button("OK");
-                final TextField textfield = new TextField();
-                vBox.getChildren().addAll(new Label("Tag:"),textfield,ok);
-                //Handler of the OK pressing button. Gets the tag and adds it to the existing ones if it doesn't already exists.
-                ok.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        String text = textfield.getText();
-                        if(!text.isEmpty()) {
-                            //Making sure the tag doesn't already exists.
-                            if(!entry.getTags().contains(text)) {
-                                entry.addTag(text);
-                                updateTags();
-                                if(!Utils.exists(controller.allTags,text)){
-                                    controller.allTags.add(text);
-                                }
-                            }
-                            dialogStage.close();
-                        }
+                openAddTagDialog();
+            }
+        }
+
+        public void openAddTagDialog(){
+            final Stage dialogStage = new Stage();
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            VBox vBox = new VBox();
+            vBox.setAlignment(Pos.CENTER);
+            Button ok = new Button("OK");
+            final TextField textfield = new TextField();
+            textfield.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    handleActionTagAdded(textfield,dialogStage);
+                }
+            });
+            vBox.getChildren().addAll(new Label("Tag:"),textfield,ok);
+            //Handler of the OK pressing button. Gets the tag and adds it to the existing ones if it doesn't already exists.
+            ok.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    handleActionTagAdded(textfield,dialogStage);
+                }
+            });
+            dialogStage.setScene(new Scene(vBox));
+            dialogStage.show();
+        }
+
+        private void handleActionTagAdded(TextField textfield , Stage dialogStage){
+            String text = textfield.getText();
+            if(!text.isEmpty()) {
+                //Making sure the tag doesn't already exists.
+                if(!entry.getTags().contains(text)) {
+                    entry.addTag(text);
+                    updateTags();
+                    if(!Utils.exists(controller.allTags,text)){
+                        controller.allTags.add(text);
                     }
-                });
-                dialogStage.setScene(new Scene(vBox));
-                dialogStage.show();
+                }
+                dialogStage.close();
             }
         }
     }

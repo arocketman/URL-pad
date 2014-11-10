@@ -1,3 +1,12 @@
+/**
+ * File name : MainController.java
+ *
+ * This class is the controller for the Main.fxml file.
+ * Its main purpose is to handle correctly the ListView containing the urls.
+ * It also handles the menu bar and the upper buttons.
+ *
+ */
+
 package fetcher.controller;
 
 import fetcher.model.Utils;
@@ -66,8 +75,6 @@ public class MainController implements Initializable {
         tagsListView.getSelectionModel().selectedIndexProperty().addListener(new ChangeListenerTagsFilter());
     }
 
-
-
     /**
      * Updates the listView with the Entry which was processed by a worker thread from PageEntry class
      * @param entry the entry to be added to the listview.
@@ -115,21 +122,7 @@ public class MainController implements Initializable {
         deleteBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if(listItems.size() > 0) {
-                    int index = listURL.getSelectionModel().getSelectedIndex();
-                    ObservableList<PageEntry> filterList = listURL.getItems();
-                    if(filterList != listItems){
-                        //If we are here, it means the user is trying to delete an entry from a filtered list, we need to find the index in the "all" list.
-                        for(int i = 0; i < listItems.size(); i++){
-                            if(filterList.get(index).equals(listItems.get(i))){
-                                index = i;
-                                filterList.remove(index);
-                                break;
-                            }
-                        }
-                    }
-                    listItems.remove(index);
-                }
+                handleDeleteMenuButton();
             }
         });
         deleteBtn.setText("Delete");
@@ -142,9 +135,42 @@ public class MainController implements Initializable {
         saveBtn.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                Utils.savePad(listItems);
+                handleSaveMenuButton();
             }
         });
+    }
+
+    @FXML
+    private void handleExitMenuButton(){
+        Platform.exit();
+    }
+
+    @FXML
+    private void handleSaveMenuButton(){
+        Utils.savePad(listItems);
+    }
+
+    /**
+     * This method deletes an entry from the listView.
+     */
+    @FXML
+    private void handleDeleteMenuButton(){
+        if(listURL.getSelectionModel().isEmpty()) return;
+        if(listItems.size() > 0) {
+            int index = listURL.getSelectionModel().getSelectedIndex();
+            ObservableList<PageEntry> filterList = listURL.getItems();
+            if(filterList != listItems){
+                //If we are here, it means the user is trying to delete an entry from a filtered list, we need to find the index in the "all" list.
+                for(int i = 0; i < listItems.size(); i++){
+                    if(filterList.get(index).equals(listItems.get(i))){
+                        index = i;
+                        filterList.remove(index);
+                        break;
+                    }
+                }
+            }
+            listItems.remove(index);
+        }
     }
 
 

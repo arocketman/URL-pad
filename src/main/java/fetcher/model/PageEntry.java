@@ -1,3 +1,11 @@
+/**
+ * File name : PageEntry.java
+ *
+ * This class represents the abstraction for a single URL entry.
+ * Using Jsoup it fetches all the needed informations from the web page.
+ *
+ */
+
 package fetcher.model;
 
 import com.google.gson.JsonArray;
