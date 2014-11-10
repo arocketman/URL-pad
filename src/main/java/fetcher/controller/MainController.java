@@ -1,4 +1,5 @@
 /**
+ *
  * File name : MainController.java
  *
  * This class is the controller for the Main.fxml file.
@@ -22,11 +23,16 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.Duration;
 import java.net.URL;
@@ -150,27 +156,32 @@ public class MainController implements Initializable {
         Utils.savePad(listItems);
     }
 
+    @FXML
+    private void handleClearTagsMenuButton(){
+        if (listURL.getSelectionModel().getSelectedItem() == null) return;
+        listURL.getSelectionModel().getSelectedItem().clearTags();
+        }
+
     /**
      * This method deletes an entry from the listView.
      */
     @FXML
     private void handleDeleteMenuButton(){
-        if(listURL.getSelectionModel().isEmpty()) return;
-        if(listItems.size() > 0) {
-            int index = listURL.getSelectionModel().getSelectedIndex();
-            ObservableList<PageEntry> filterList = listURL.getItems();
-            if(filterList != listItems){
-                //If we are here, it means the user is trying to delete an entry from a filtered list, we need to find the index in the "all" list.
-                for(int i = 0; i < listItems.size(); i++){
-                    if(filterList.get(index).equals(listItems.get(i))){
-                        index = i;
-                        filterList.remove(index);
-                        break;
-                    }
+        if (listURL.getSelectionModel().getSelectedItem() == null) return;
+        int index = listURL.getSelectionModel().getSelectedIndex();
+        ObservableList<PageEntry> filterList = listURL.getItems();
+        if (filterList != listItems) {
+            //If we are here, it means the user is trying to delete an entry from a filtered list, we need to find the index in the "all" list.
+            for (int i = 0; i < listItems.size(); i++) {
+                if (filterList.get(index).equals(listItems.get(i))) {
+                    index = i;
+                    filterList.remove(index);
+                    break;
                 }
             }
-            listItems.remove(index);
         }
+        listItems.remove(index);
+
     }
 
 

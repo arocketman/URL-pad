@@ -1,9 +1,10 @@
 /**
+ *
  * File name : EntryCell.java
  *
  * This class is the controller for the EntryCell.fxml file.
  * Its main purpose is to react to user interaction with the single entry. (e.g : updating tags ) .
- * 
+ *
  */
 
 package fetcher.controller;
@@ -152,6 +153,9 @@ public class EntryCell extends ListCell<PageEntry> {
             }
         }
 
+        /**
+         * Creates and opens the dialog to add a tag.
+         */
         public void openAddTagDialog(){
             final Stage dialogStage = new Stage();
             dialogStage.initModality(Modality.WINDOW_MODAL);
@@ -177,6 +181,11 @@ public class EntryCell extends ListCell<PageEntry> {
             dialogStage.show();
         }
 
+        /**
+         * Adds the tag to the PageEntry associated with the EntryCell.
+         * @param textfield , the textfield where the tag text is located.
+         * @param dialogStage , the dialog of add a tag.
+         */
         private void handleActionTagAdded(TextField textfield , Stage dialogStage){
             String text = textfield.getText();
             if(!text.isEmpty()) {

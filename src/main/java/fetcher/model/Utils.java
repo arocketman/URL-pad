@@ -1,4 +1,5 @@
 /**
+ *
  * File name : Utils.java
  *
  * The utils class is composed of static methods that are used all throughout the program.
@@ -11,6 +12,7 @@ package fetcher.model;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import fetcher.controller.MainController;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.io.*;
@@ -123,5 +125,13 @@ public class Utils {
             if(element.equals(currentElement)) return true;
         }
         return false;
+    }
+
+    public static <T> ObservableList<T> convertToObservableList(HashSet<T> set) {
+        ObservableList<T> convertedList = FXCollections.observableArrayList();
+        for(T elem : set){
+            convertedList.add(elem);
+        }
+        return convertedList;
     }
 }

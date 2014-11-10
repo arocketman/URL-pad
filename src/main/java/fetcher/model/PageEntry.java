@@ -1,4 +1,5 @@
 /**
+ *
  * File name : PageEntry.java
  *
  * This class represents the abstraction for a single URL entry.
@@ -152,6 +153,15 @@ public class PageEntry {
 
     public void setTags(HashSet tags) {
         this.tags = tags;
+    }
+
+    public void clearTags() {
+        tags.clear();
+        tags.add("all");
+    }
+
+    public void deleteTag(String selectedItem) {
+        if(tags.contains(selectedItem) && !selectedItem.equalsIgnoreCase("all")) tags.remove(selectedItem);
     }
 
     class Worker implements Runnable{
