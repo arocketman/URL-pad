@@ -32,7 +32,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import javax.xml.soap.Text;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
