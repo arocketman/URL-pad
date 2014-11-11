@@ -151,32 +151,41 @@ public class Utils {
         }
         return convertedList;
     }
-    
+
+    /**
+     * Converts a given URL to an image which will be saved on /images/ folder.
+     * It uses a WebView which basically renders the page in the browser. Once the rendering is complete the screenshot is taken.
+     * @param url Url to be converted to image.
+     * @return the file location.
+     */
     public static String getWebsiteSnapshot(final String url){
-        //TODO: NEEDS REFACTORING
+        //Creating the window and initializing the browser.
         final Stage urlStage = new Stage();
+        final WebView browser = new WebView();
+        final WebEngine webEngine = browser.getEngine();
+        final Rectangle2D screensize = Screen.getPrimary().getVisualBounds();
+        urlStage.setWidth(screensize.getWidth());
+        urlStage.setHeight(screensize.getHeight());
+        VBox.setVgrow(browser, Priority.ALWAYS);
+        Scene scene = new Scene(new Group());
+        VBox root = new VBox();
+        //Retrieving the url string and sanitizing it for it to be saved as a File, it removes the http:// and www. from the url as well.
         String tempName = url.replaceAll("(http://|https://|http://www\\.|www\\.)","").replaceAll("[^a-zA-Z0-9.-]", "_");
         if(tempName.length() > 10) {
             tempName.substring(0, 10);
         }
         tempName += ".png";
         final String fileName = tempName;
-        urlStage.setTitle("HTML");
-        final Rectangle2D screensize = Screen.getPrimary().getVisualBounds();
-        urlStage.setWidth(screensize.getWidth());
-        urlStage.setHeight(screensize.getHeight());
-        Scene scene = new Scene(new Group());
-        VBox root = new VBox();
-        final WebView browser = new WebView();
-        VBox.setVgrow(browser, Priority.ALWAYS);
-        final WebEngine webEngine = browser.getEngine();
+        //Loading the url and adding a listener to the changed state property (We want to learn when the page loads).
         webEngine.load(url);
         webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
             @Override
             public void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
                 if (newValue.equals(Worker.State.SUCCEEDED)) {
+                    //If the page loads, let's take a snapshot of it.
                     WritableImage snapshot = new WritableImage((int)screensize.getWidth(), (int)screensize.getHeight());
                     browser.snapshot(null, snapshot);
+                    //Save the snapshot on the hard drive.
                     File imgDir = (new File("urlpadimages"));
                     imgDir.mkdir();
                     File file = new File(imgDir.getAbsolutePath() + "\\" + fileName);
@@ -195,6 +204,7 @@ public class Utils {
                 }
             }
         });
+
         root.getChildren().addAll(browser);
         scene.setRoot(root);
         urlStage.setIconified(true);
