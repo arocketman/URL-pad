@@ -171,14 +171,13 @@ public class MainController implements Initializable {
             //If we are here, it means the user is trying to delete an entry from a filtered list, we need to find the index in the "all" list.
             for (int i = 0; i < listItems.size(); i++) {
                 if (filterList.get(index).equals(listItems.get(i))) {
+                    filterList.remove(index);
                     index = i;
-                    listItems.remove(index);
                     break;
                 }
             }
         }
         listItems.remove(index);
-
     }
 
     class HandleClipboardChange implements EventHandler<ActionEvent> {

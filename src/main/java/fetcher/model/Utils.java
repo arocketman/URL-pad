@@ -12,6 +12,7 @@ package fetcher.model;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import fetcher.controller.MainController;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -188,6 +189,7 @@ public class Utils {
             @Override
             public void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
                 if (newValue.equals(Worker.State.SUCCEEDED)) {
+                    if(webEngine.getDocument().getBaseURI().equals("about:blank")) return;
                     //If the page loads, let's take a snapshot of it.
                     WritableImage snapshot = new WritableImage((int)screensize.getWidth(), (int)screensize.getHeight());
                     browser.snapshot(null, snapshot);
@@ -199,6 +201,7 @@ public class Utils {
                     try {
                         ImageIO.write(renderedImage, "png", file);
                         urlStage.close();
+                        webEngine.load(null);
                     } catch (IOException ex) {
                         //TODO: What to do here?
                         ex.printStackTrace();
