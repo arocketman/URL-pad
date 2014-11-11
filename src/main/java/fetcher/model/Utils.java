@@ -144,6 +144,12 @@ public class Utils {
         return false;
     }
 
+    /**
+     * Converts a HashSet to an observable list .
+     * @param set The set to be converted
+     * @param <T>
+     * @return an ObservableList with the Hashset values.
+     */
     public static <T> ObservableList<T> convertToObservableList(HashSet<T> set) {
         ObservableList<T> convertedList = FXCollections.observableArrayList();
         for(T elem : set){
@@ -172,7 +178,7 @@ public class Utils {
         //Retrieving the url string and sanitizing it for it to be saved as a File, it removes the http:// and www. from the url as well.
         String tempName = url.replaceAll("(http://|https://|http://www\\.|www\\.)","").replaceAll("[^a-zA-Z0-9.-]", "_");
         if(tempName.length() > 10) {
-            tempName.substring(0, 10);
+            tempName = tempName.substring(0, 10);
         }
         tempName += ".png";
         final String fileName = tempName;

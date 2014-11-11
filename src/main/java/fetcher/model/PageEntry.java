@@ -14,6 +14,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import fetcher.controller.MainController;
 import javafx.application.Platform;
+import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -63,22 +64,23 @@ public class PageEntry {
         Document doc = null;
         try {
             doc = Jsoup.connect(URL).get();
+        } catch (HttpStatusException e){
+            System.out.println("Failed to load page : " + URL + " , HTTP status code received was : " + e.getStatusCode());
+            return;
         } catch (IOException e) {
-            //TODO: Stop the page entry to go through.. this will be broken (e.g: valid URL but not functioning website).
             e.printStackTrace();
+            return;
         }
         this.Name = doc.title();
         this.DateAdded = Calendar.getInstance().getTime();
         //Getting description
         if(doc.select("p").first() != null)
             Description = doc.select("p").first().text();
-        //Getting the images , gets the first valid image (check isValidUrl function in utils class).
-        Elements images = doc.select("img");
-        //TODO: Make the image search way better, right now it just takes the first image regardless of size and significance.
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
                 pageSnapshot = "file:///" + (new File("")).getAbsolutePath() + "\\urlpadimages\\" + Utils.getWebsiteSnapshot(getURL());
+
             }
         });
     }
