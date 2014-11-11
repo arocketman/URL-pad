@@ -14,6 +14,11 @@ label[
     -fx-background-color: #222222;
 }
 
+#imageView:hover{
+    -fx-scale:3;
+
+}
+
 #title{
 	-fx-font-size:26px;
 	-fx-font-weight:bold;

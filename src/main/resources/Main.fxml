@@ -28,7 +28,7 @@
                       </Menu>
                     </menus>
                   </MenuBar>
-                  <HBox alignment="TOP_CENTER" maxHeight="200.0">
+                  <HBox alignment="TOP_CENTER" maxHeight="50.0">
                      <children>
                        <!-- <Button fx:id="addBtn" mnemonicParsing="false" text="" /> -->
                         <Button fx:id="saveBtn" mnemonicParsing="false" />

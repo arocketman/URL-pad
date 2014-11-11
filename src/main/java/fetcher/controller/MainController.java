@@ -172,7 +172,7 @@ public class MainController implements Initializable {
             for (int i = 0; i < listItems.size(); i++) {
                 if (filterList.get(index).equals(listItems.get(i))) {
                     index = i;
-                    filterList.remove(index);
+                    listItems.remove(index);
                     break;
                 }
             }

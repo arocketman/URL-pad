@@ -13,7 +13,7 @@
    <children>
       <HBox fx:id="hbox">
          <children>
-            <ImageView fx:id="imageView" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="imageView" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
             <VBox fx:id="vbox" HBox.hgrow="ALWAYS">
                <children>
                   <Label fx:id="date" text="date" />

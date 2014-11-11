@@ -102,10 +102,10 @@ public class EntryCell extends ListCell<PageEntry> {
             description.setText(item.getDescription());
             Image image;
             if(item.getPageSnapshot().isEmpty()){
-                image = new Image("images/octopus.png", 150 , 150, false , false );
+                image = new Image("images/octopus.png", 200 , 200, false , false );
             }
             else{
-                image = new Image(item.getPageSnapshot(), 150 , 150, false , false );
+                image = new Image(item.getPageSnapshot(), 200 , 200, false , false );
             }
             imageView.setImage(image);
             updateTags();
