@@ -10,6 +10,8 @@
 
 package fetcher.controller;
 
+import com.sun.javafx.robot.FXRobot;
+import com.sun.javafx.robot.FXRobotFactory;
 import fetcher.model.Utils;
 import fetcher.model.PageEntry;
 import javafx.animation.KeyFrame;
@@ -26,6 +28,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
@@ -35,6 +38,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.Duration;
+
+import java.awt.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -183,7 +188,6 @@ public class MainController implements Initializable {
         listItems.remove(index);
 
     }
-
 
     class HandleClipboardChange implements EventHandler<ActionEvent> {
 

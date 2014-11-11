@@ -13,11 +13,13 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import fetcher.controller.MainController;
+import javafx.application.Platform;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -63,6 +65,7 @@ public class PageEntry {
         try {
             doc = Jsoup.connect(URL).get();
         } catch (IOException e) {
+            //TODO: Stop the page entry to go through.. this will be broken (e.g: valid URL but not functioning website).
             e.printStackTrace();
         }
         this.Name = doc.title();
@@ -73,16 +76,12 @@ public class PageEntry {
         //Getting the images , gets the first valid image (check isValidUrl function in utils class).
         Elements images = doc.select("img");
         //TODO: Make the image search way better, right now it just takes the first image regardless of size and significance.
-        if(!images.isEmpty()){
-            for(Element image : images){
-                if(Utils.isValidURL(image.attr("src")) && Utils.isDirectLinkImage(image.attr("src"))){
-                    pageSnapshot = image.attr("src");
-                    break;
-                }
-
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                pageSnapshot = "file:///" + (new File("")).getAbsolutePath() + "\\urlpadimages\\" + Utils.getWebsiteSnapshot(getURL());
             }
-        }
-
+        });
     }
 
     /**

@@ -12,9 +12,25 @@ package fetcher.model;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import fetcher.controller.MainController;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Worker;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.image.WritableImage;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
 
+import javax.imageio.ImageIO;
+import java.awt.image.RenderedImage;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -22,6 +38,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.List;
 
 public class Utils {
     private static final String LOCATIONS_FILESAVE = "pad.json";
@@ -134,4 +151,57 @@ public class Utils {
         }
         return convertedList;
     }
+    
+    public static String getWebsiteSnapshot(final String url){
+        //TODO: NEEDS REFACTORING
+        final Stage urlStage = new Stage();
+        String tempName = url.replaceAll("(http://|https://|http://www\\.|www\\.)","").replaceAll("[^a-zA-Z0-9.-]", "_");
+        if(tempName.length() > 10) {
+            tempName.substring(0, 10);
+        }
+        tempName += ".png";
+        final String fileName = tempName;
+        urlStage.setTitle("HTML");
+        final Rectangle2D screensize = Screen.getPrimary().getVisualBounds();
+        urlStage.setWidth(screensize.getWidth());
+        urlStage.setHeight(screensize.getHeight());
+        Scene scene = new Scene(new Group());
+        VBox root = new VBox();
+        final WebView browser = new WebView();
+        VBox.setVgrow(browser, Priority.ALWAYS);
+        final WebEngine webEngine = browser.getEngine();
+        webEngine.load(url);
+        webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
+            @Override
+            public void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
+                if (newValue.equals(Worker.State.SUCCEEDED)) {
+                    WritableImage snapshot = new WritableImage((int)screensize.getWidth(), (int)screensize.getHeight());
+                    browser.snapshot(null, snapshot);
+                    File imgDir = (new File("urlpadimages"));
+                    imgDir.mkdir();
+                    File file = new File(imgDir.getAbsolutePath() + "\\" + fileName);
+                    RenderedImage renderedImage = SwingFXUtils.fromFXImage(snapshot, null);
+                    try {
+                        ImageIO.write(renderedImage, "png", file);
+                        urlStage.close();
+                    } catch (IOException ex) {
+                        //TODO: What to do here?
+                        ex.printStackTrace();
+                    }
+                }
+                else if(newValue.equals(Worker.State.FAILED)){
+                    //TODO: Send an error message somehow.
+                    urlStage.close();
+                }
+            }
+        });
+        root.getChildren().addAll(browser);
+        scene.setRoot(root);
+        urlStage.setIconified(true);
+        urlStage.setScene(scene);
+        urlStage.show();
+
+        return fileName;
+    }
 }
+
