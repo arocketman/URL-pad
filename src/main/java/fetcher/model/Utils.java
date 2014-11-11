@@ -31,6 +31,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.*;
 import java.net.MalformedURLException;
@@ -179,6 +180,7 @@ public class Utils {
         //Retrieving the url string and sanitizing it for it to be saved as a File, it removes the http:// and www. from the url as well.
         String tempName = url.replaceAll("(http://|https://|http://www\\.|www\\.)","").replaceAll("[^a-zA-Z0-9.-]", "_");
         if(tempName.length() > 10) {
+            //TODO: Consider grabbing the last part to distinguish the urls. Or just make something up like first 5 letters.. a dash and the last five letters.
             tempName = tempName.substring(0, 10);
         }
         tempName += ".png";
@@ -197,7 +199,9 @@ public class Utils {
                     File imgDir = (new File("urlpadimages"));
                     imgDir.mkdir();
                     File file = new File(imgDir.getAbsolutePath() + "\\" + fileName);
-                    RenderedImage renderedImage = SwingFXUtils.fromFXImage(snapshot, null);
+                    BufferedImage renderedImage = SwingFXUtils.fromFXImage(snapshot, null);
+                    //Some math to get a little better thumbnail. Starting x is at 1/4 of the totale page. Goes for a width of half of the screen size to attempt and get the 'core' of the content.
+                    renderedImage = renderedImage.getSubimage((int)(screensize.getWidth() /4),0,(int)( screensize.getWidth()  / 2 ),(int) screensize.getHeight() / 2);
                     try {
                         ImageIO.write(renderedImage, "png", file);
                         urlStage.close();
@@ -219,6 +223,24 @@ public class Utils {
         urlStage.setIconified(true);
         urlStage.setScene(scene);
         urlStage.show();
+
+        //Timeout for loading pages.
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(webEngine.getLoadWorker().getState() == Worker.State.RUNNING){
+                            webEngine.load(null);
+                            urlStage.close();
+                        }
+                    }
+                });
+
+            }
+        },30000);
 
         return fileName;
     }

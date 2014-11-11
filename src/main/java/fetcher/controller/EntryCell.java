@@ -78,6 +78,7 @@ public class EntryCell extends ListCell<PageEntry> {
                 (new mouseClickedHandler()).openAddTagDialog();
             }
         });
+
     }
 
 
