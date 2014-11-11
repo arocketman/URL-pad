@@ -59,17 +59,18 @@ public class PageEntry {
 
     /**
      * Loads the page provided by the URL parameter and uses Jsoup to retrieve its content.
+     * @return true if the page loading has success
      */
-    private void loadPage(){
+    private boolean loadPage(){
         Document doc = null;
         try {
             doc = Jsoup.connect(URL).get();
         } catch (HttpStatusException e){
             System.out.println("Failed to load page : " + URL + " , HTTP status code received was : " + e.getStatusCode());
-            return;
+            return false;
         } catch (IOException e) {
             e.printStackTrace();
-            return;
+            return false;
         }
         this.Name = doc.title();
         this.DateAdded = Calendar.getInstance().getTime();
@@ -83,6 +84,7 @@ public class PageEntry {
 
             }
         });
+        return true;
     }
 
     /**
@@ -164,8 +166,12 @@ public class PageEntry {
         if(tags.contains(selectedItem) && !selectedItem.equalsIgnoreCase("all")) tags.remove(selectedItem);
     }
 
+    /**
+     * Worker class is used to load a single PageEntry from a Thread so that the main program doesn't get stuck.
+     */
     class Worker implements Runnable{
 
+        //The worker Thread is used both when loading a URL from the clipboard and when we are loading from json. This boolean makes the double-usage possible.
         boolean loadFromURL;
 
         public Worker(boolean loadFromUrl){
@@ -174,7 +180,10 @@ public class PageEntry {
 
         @Override
         public void run() {
-            if(loadFromURL)loadPage();
+            //If we are loading from a url we try to load the page. We return if the loading fails (so the controller won't be notified).
+            if(loadFromURL)
+                if(!loadPage()) return;
+
             controller.notifyControllerNewEntry(PageEntry.this);
         }
     }
