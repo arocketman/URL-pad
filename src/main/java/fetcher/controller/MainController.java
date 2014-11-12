@@ -56,7 +56,7 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        pad = new Pad("pad2");
+        pad = new Pad("pad");
         //Setting up a periodic clipboard checker.
         HandleClipboardChange listener = new HandleClipboardChange();
         Timeline repeatTask = new Timeline(new KeyFrame(Duration.millis(200), listener));
