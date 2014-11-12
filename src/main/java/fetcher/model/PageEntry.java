@@ -61,9 +61,9 @@ public class PageEntry {
      * @return true if the page loading has success
      */
     private boolean loadPage(){
-        Document doc = null;
+        Document doc;
         try {
-            doc = Jsoup.connect(URL).get();
+            doc = Jsoup.connect(URL).userAgent("Mozilla").get();
         } catch (HttpStatusException e){
             System.out.println("Failed to load page : " + URL + " , HTTP status code received was : " + e.getStatusCode());
             return false;
