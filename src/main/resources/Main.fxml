@@ -27,6 +27,14 @@
                         </items>
                       </Menu>
                     </menus>
+                      <Menu mnemonicParsing="false" text="Sort">
+                          <items>
+                              <MenuItem fx:id="dateASC" mnemonicParsing="false" text="Date - ASC" onAction="#handleSortMenuButton" />
+                              <MenuItem fx:id="dateDESC" mnemonicParsing="false" text="Date - DESC" onAction="#handleSortMenuButton" />
+                              <MenuItem fx:id="alphASC" mnemonicParsing="false" text="Alphabetically - ASC" onAction="#handleSortMenuButton" />
+                              <MenuItem fx:id="alphDESC" mnemonicParsing="false" text="Alphabetically - DESC" onAction="#handleSortMenuButton" />
+                          </items>
+                      </Menu>
                   </MenuBar>
                   <HBox alignment="TOP_CENTER" maxHeight="50.0">
                      <children>

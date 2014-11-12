@@ -10,6 +10,7 @@
 
 package fetcher.controller;
 
+import fetcher.model.EntriesComparators;
 import fetcher.model.Utils;
 import fetcher.model.PageEntry;
 import javafx.animation.KeyFrame;
@@ -33,6 +34,8 @@ import javafx.util.Callback;
 import javafx.util.Duration;
 
 import java.net.URL;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
@@ -178,6 +181,24 @@ public class MainController implements Initializable {
             }
         }
         listItems.remove(index);
+    }
+
+    @FXML
+    public void handleSortMenuButton(ActionEvent actionEvent) {
+        Object eventTriggerer = actionEvent.getSource();
+        if(eventTriggerer instanceof MenuItem){
+            MenuItem buttonPressed = (MenuItem) eventTriggerer;
+            if(buttonPressed.getId().equalsIgnoreCase("dateASC"))
+                Collections.sort(listItems, EntriesComparators.getDateComparator());
+            else if(buttonPressed.getId().equalsIgnoreCase("dateDESC")){
+                Collections.sort(listItems, EntriesComparators.getDateComparator().reversed());
+            }
+            else if(buttonPressed.getId().equalsIgnoreCase("alphASC"))
+                Collections.sort(listItems, EntriesComparators.getAlphabeticalComparator());
+            else if(buttonPressed.getId().equalsIgnoreCase("alphDESC")){
+                Collections.sort(listItems, EntriesComparators.getAlphabeticalComparator().reversed());
+            }
+        }
     }
 
     class HandleClipboardChange implements EventHandler<ActionEvent> {

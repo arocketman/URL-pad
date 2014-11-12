@@ -69,7 +69,7 @@ public class EntryCell extends ListCell<PageEntry> {
             fxmlLoader.load();
         } catch (IOException exception) {
             throw new RuntimeException(exception);
-    }
+        }
         title.textProperty().addListener(new TextFieldListener("title"));
         description.textProperty().addListener(new TextFieldListener("description"));
         tags.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -202,6 +202,10 @@ public class EntryCell extends ListCell<PageEntry> {
         }
     }
 
+
+    /**
+     * TextFieldListener for the title and description. Updates the corrisponding entry's fields.
+     */
     class TextFieldListener implements ChangeListener<String> {
 
         String FieldToModify;

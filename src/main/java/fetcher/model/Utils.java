@@ -224,7 +224,7 @@ public class Utils {
         urlStage.setScene(scene);
         urlStage.show();
 
-        //Timeout for loading pages.
+        //Timeout for loading pages. If the page is still loading after 20 seconds we force it to stop.
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override

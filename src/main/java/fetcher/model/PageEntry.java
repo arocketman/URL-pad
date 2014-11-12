@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class PageEntry {
+public class PageEntry{
     String URL;
     String Name;
     String Description;
