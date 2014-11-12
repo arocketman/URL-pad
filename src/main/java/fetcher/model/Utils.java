@@ -3,26 +3,8 @@ package fetcher.model;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import fetcher.controller.MainController;
-import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Worker;
-import javafx.embed.swing.SwingFXUtils;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.image.WritableImage;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
-import javafx.stage.Screen;
-import javafx.stage.Stage;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -156,91 +138,6 @@ public class Utils {
             convertedList.add(elem);
         }
         return convertedList;
-    }
-
-    /**
-     * Converts a given URL to an image which will be saved on /images/ folder.
-     * It uses a WebView which basically renders the page in the browser. Once the rendering is complete the screenshot is taken.
-     * @param url Url to be converted to image.
-     * @return the file location.
-     */
-    public static String getWebsiteSnapshot(final String url){
-        //Creating the window and initializing the browser.
-        final Stage urlStage = new Stage();
-        final WebView browser = new WebView();
-        final WebEngine webEngine = browser.getEngine();
-        final Rectangle2D screensize = Screen.getPrimary().getVisualBounds();
-        urlStage.setWidth(screensize.getWidth());
-        urlStage.setHeight(screensize.getHeight());
-        VBox.setVgrow(browser, Priority.ALWAYS);
-        Scene scene = new Scene(new Group());
-        VBox root = new VBox();
-        //Retrieving the url string and sanitizing it for it to be saved as a File, it removes the http:// and www. from the url as well.
-        String tempName = url.replaceAll("(http://|https://|http://www\\.|www\\.)","").replaceAll("[^a-zA-Z0-9.-]", "_");
-        if(tempName.length() > 10) {
-            //TODO: Consider grabbing the last part to distinguish the urls. Or just make something up like first 5 letters.. a dash and the last five letters.
-            tempName = tempName.substring(0, 10);
-        }
-        tempName += ".png";
-        final String fileName = tempName;
-        //Loading the url and adding a listener to the changed state property (We want to learn when the page loads).
-        webEngine.load(url);
-        webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() {
-            @Override
-            public void changed(ObservableValue<? extends Worker.State> observable, Worker.State oldValue, Worker.State newValue) {
-                if (newValue.equals(Worker.State.SUCCEEDED)) {
-                    if(webEngine.getDocument().getBaseURI().equals("about:blank")) return;
-                    //If the page loads, let's take a snapshot of it.
-                    WritableImage snapshot = new WritableImage((int)screensize.getWidth(), (int)screensize.getHeight());
-                    browser.snapshot(null, snapshot);
-                    //Save the snapshot on the hard drive.
-                    File imgDir = (new File("urlpadimages"));
-                    imgDir.mkdir();
-                    File file = new File(imgDir.getAbsolutePath() + "\\" + fileName);
-                    BufferedImage renderedImage = SwingFXUtils.fromFXImage(snapshot, null);
-                    //Some math to get a little better thumbnail. Starting x is at 1/4 of the totale page. Goes for a width of half of the screen size to attempt and get the 'core' of the content.
-                    renderedImage = renderedImage.getSubimage((int)(screensize.getWidth() /4),0,(int)( screensize.getWidth()  / 2 ),(int) screensize.getHeight() / 2);
-                    try {
-                        ImageIO.write(renderedImage, "png", file);
-                        urlStage.close();
-                        webEngine.load(null);
-                    } catch (IOException ex) {
-                        //TODO: What to do here?
-                        ex.printStackTrace();
-                    }
-                }
-                else if(newValue.equals(Worker.State.FAILED)){
-                    //TODO: Send an error message somehow.
-                    urlStage.close();
-                }
-            }
-        });
-
-        root.getChildren().addAll(browser);
-        scene.setRoot(root);
-        urlStage.setIconified(true);
-        urlStage.setScene(scene);
-        urlStage.show();
-
-        //Timeout for loading pages. If the page is still loading after 20 seconds we force it to stop.
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        if(webEngine.getLoadWorker().getState() == Worker.State.RUNNING){
-                            webEngine.load(null);
-                            urlStage.close();
-                        }
-                    }
-                });
-
-            }
-        },30000);
-
-        return fileName;
     }
 }
 

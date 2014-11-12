@@ -79,12 +79,10 @@ public class EntryCell extends ListCell<PageEntry> {
 
     }
 
-
-
     /**
      * This is used to update a cell entry.
      * @param item the PageEntry that is being inserted / updated
-     * @param empty
+     * @param empty whether or not this cell represents data from the list. If it is empty, then it does not represent any domain data, but is a cell being used to render an "empty" row.
      */
     @Override
     protected void updateItem(PageEntry item, boolean empty) {
@@ -130,7 +128,7 @@ public class EntryCell extends ListCell<PageEntry> {
 
         /**
          * Opens up the default browser to open the url of the selected entry. Only works if double-clicked.
-         * @param event
+         * @param event the event which occurred.
          */
         @Override
         public void handle(MouseEvent event) {
@@ -200,7 +198,6 @@ public class EntryCell extends ListCell<PageEntry> {
         }
     }
 
-
     /**
      * TextFieldListener for the title and description. Updates the corrisponding entry's fields.
      */
@@ -220,6 +217,5 @@ public class EntryCell extends ListCell<PageEntry> {
                 entry.setDescription(description.getText());
         }
     }
-
 
 }

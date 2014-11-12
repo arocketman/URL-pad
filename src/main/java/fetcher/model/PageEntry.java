@@ -37,7 +37,7 @@ public class PageEntry{
         this.pageSnapshot = "images/octopus.png";
         this.Description = "";
         this.tags = new HashSet<String>();
-        //TODO: This is to 'reset' the filter by tags (Show all entries) . Probably needs a better solution.
+        //This is to 'reset' the filter by tags (Show all entries) .
         tags.add("all");
         Thread workerThread = new Thread(new Worker(true));
         workerThread.start();
@@ -78,7 +78,7 @@ public class PageEntry{
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                pageSnapshot = "file:///" + (new File("")).getAbsolutePath() + "\\urlpadimages\\" + Utils.getWebsiteSnapshot(getURL());
+                pageSnapshot = "file:///" + (new File("")).getAbsolutePath() + "\\urlpadimages\\" + (new Snapshotter(getURL())).getWebsiteSnapshot();
 
             }
         });

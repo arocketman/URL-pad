@@ -41,7 +41,6 @@ public class MainController implements Initializable {
 
     Clipboard clipboard;
     public final ObservableList<PageEntry> listItems = FXCollections.observableArrayList();
-    //TODO: Make this an observable list, so that I can handle them like a list
     public final ObservableList<String> allTags = FXCollections.observableArrayList();
 
     @FXML
@@ -90,14 +89,13 @@ public class MainController implements Initializable {
             public void run() {
                 listItems.add(entry);
                 if(allTags.size() == 0) allTags.add("all");
+         }});
     }
-});
-        }
 
     /**
-     * Checks if there's a duplicate link
-     * @param clipBoardStatus the URL copied inside the clipboard
-     * @return true if already in the list
+     * Checks if there's a duplicate link.
+     * @param clipBoardStatus the URL copied inside the clipboard.
+     * @return true if already in the list.
      */
     private boolean EntryAlreadyExists(String clipBoardStatus) {
         for(PageEntry entry : listItems){
@@ -206,14 +204,12 @@ public class MainController implements Initializable {
 
     class HandleClipboardChange implements EventHandler<ActionEvent> {
 
-
         String currentString;
 
         public HandleClipboardChange() {
             if (clipboard.hasString()) currentString = clipboard.getString();
             else currentString = "";
         }
-
 
         /**
          * Checks if there's any change in the clipboard. Makes sure the change is a URL, creates a PageEntry based on that URL.
