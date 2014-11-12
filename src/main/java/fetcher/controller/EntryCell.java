@@ -189,9 +189,7 @@ public class EntryCell extends ListCell<PageEntry> {
                 if(!entry.getTags().contains(text)) {
                     entry.addTag(text);
                     updateTags();
-                    if(!Utils.exists(controller.allTags,text)){
-                        controller.allTags.add(text);
-                    }
+                    controller.pad.addTag(text);
                 }
                 dialogStage.close();
             }

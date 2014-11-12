@@ -35,6 +35,10 @@ public class Snapshotter {
     Rectangle2D screenSize;
     String url;
 
+    /**
+     * Builds the browser based on the given url .
+     * @param url the URL of the website to be snapshotted.
+     */
     public Snapshotter(String url){
         this.url = url;
         urlStage = new Stage();

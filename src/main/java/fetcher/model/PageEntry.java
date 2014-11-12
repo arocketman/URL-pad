@@ -46,7 +46,7 @@ public class PageEntry{
 
     /**
      * Constructor used just when loading from the json file.
-     * @param controller
+     * @param controller the mainController.
      */
     public PageEntry(MainController controller){
         this.controller = controller;
@@ -104,6 +104,11 @@ public class PageEntry{
         return savedJson;
     }
 
+    /**
+     * Loads an entry based on a json Object.
+     * @param JsonObjectEntry the json object containing the entry.
+     * @throws ParseException
+     */
     public void loadEntry(JsonObject JsonObjectEntry) throws ParseException {
         setURL(JsonObjectEntry.get("URL").getAsString());
         setDescription(JsonObjectEntry.get("Description").getAsString());
@@ -160,7 +165,7 @@ public class PageEntry{
         return tags;
     }
 
-    public void setTags(HashSet tags) {
+    public void setTags(HashSet<String> tags) {
         this.tags = tags;
     }
 

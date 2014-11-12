@@ -17,7 +17,6 @@ import java.util.List;
  *
  */
 public class Utils {
-    private static final String LOCATIONS_FILESAVE = "pad.json";
 
     /**
      * Opens up a connection with the given URL and returns true if the response code is 200 (success)
@@ -37,15 +36,6 @@ public class Utils {
     }
 
     /**
-     * Checks if the image is a direct link one or not.
-     * @param image the string to be checked.
-     * @return true if the string is a direct link image.
-     */
-    public static boolean isDirectLinkImage(String image){
-        return image.endsWith(".jpg") || image.endsWith(".png") || image.endsWith(".bmp");
-    }
-
-    /**
      * Checks if an element exists in a given array.
      * @param array the array to search within
      * @param element the element we want to search for
@@ -62,7 +52,7 @@ public class Utils {
     /**
      * Converts a HashSet to an observable list .
      * @param set The set to be converted
-     * @param <T>
+     * @param <T> the generic type.
      * @return an ObservableList with the Hashset values.
      */
     public static <T> ObservableList<T> convertToObservableList(HashSet<T> set) {

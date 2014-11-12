@@ -9,8 +9,6 @@ import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -42,8 +40,6 @@ public class MainController implements Initializable {
 
     Clipboard clipboard;
     Pad pad;
-    public ObservableList<PageEntry> listItems = FXCollections.observableArrayList();
-    public ObservableList<String> allTags = FXCollections.observableArrayList();
 
     @FXML
     private ListView<PageEntry> listURL;
@@ -60,7 +56,7 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        pad = new Pad("pad");
+        pad = new Pad("pad2");
         //Setting up a periodic clipboard checker.
         HandleClipboardChange listener = new HandleClipboardChange();
         Timeline repeatTask = new Timeline(new KeyFrame(Duration.millis(200), listener));
@@ -74,8 +70,8 @@ public class MainController implements Initializable {
 
             }
         });
-        listURL.setItems(listItems);
-        tagsListView.setItems(allTags);
+        listURL.setItems(pad.listItems);
+        tagsListView.setItems(pad.allTags);
         setupButtons();
         //Loading the pad if there's a saved one.
         if(pad.savedPadExists())pad.loadPad(this);
@@ -83,38 +79,17 @@ public class MainController implements Initializable {
     }
 
     /**
-     * Updates the listView with the Entry which was processed by a worker thread from PageEntry class
+     * Updates the listView with the Entry which was processed by a worker thread from PageEntry class.
      * @param entry the entry to be added to the listview.
      */
     public void notifyControllerNewEntry(final PageEntry entry){
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                listItems.add(entry);
-                if(allTags.size() == 0) allTags.add("all");
+                pad.listItems.add(entry);
+                //TODO: Doesn't need to be here, probably can be put in the add method itself.
+                if(pad.allTags.size() == 0) pad.allTags.add("all");
          }});
-    }
-
-    /**
-     * Checks if there's a duplicate link.
-     * @param clipBoardStatus the URL copied inside the clipboard.
-     * @return true if already in the list.
-     */
-    private boolean EntryAlreadyExists(String clipBoardStatus) {
-        for(PageEntry entry : listItems){
-            if(entry.getURL().equalsIgnoreCase(clipBoardStatus)) return true;
-        }
-        return false;
-    }
-
-    /**
-     * Adds a tag to the array allTags only if it is not a duplicate.
-     * @param tag tag to be added.
-     */
-    public void addTag(String tag){
-        if(!Utils.exists(this.allTags,tag)){
-            this.allTags.add(tag);
-        }
     }
 
     /**
@@ -146,16 +121,25 @@ public class MainController implements Initializable {
         });
     }
 
+    /**
+     * Exits the program.
+     */
     @FXML
     private void handleExitMenuButton(){
         Platform.exit();
     }
 
+    /**
+     * Saves the pad.
+     */
     @FXML
     private void handleSaveMenuButton(){
-        pad.savePad(listItems);
+        pad.savePad();
     }
 
+    /**
+     * Clear the tags from the selected entry.
+     */
     @FXML
     private void handleClearTagsMenuButton(){
         if (listURL.getSelectionModel().getSelectedItem() == null) return;
@@ -169,18 +153,7 @@ public class MainController implements Initializable {
     private void handleDeleteMenuButton(){
         if (listURL.getSelectionModel().getSelectedItem() == null) return;
         int index = listURL.getSelectionModel().getSelectedIndex();
-        ObservableList<PageEntry> filterList = listURL.getItems();
-        if (filterList != listItems) {
-            //If we are here, it means the user is trying to delete an entry from a filtered list, we need to find the index in the "all" list.
-            for (int i = 0; i < listItems.size(); i++) {
-                if (filterList.get(index).equals(listItems.get(i))) {
-                    filterList.remove(index);
-                    index = i;
-                    break;
-                }
-            }
-        }
-        listItems.remove(index);
+        pad.deleteEntry(index,listURL.getItems());
     }
 
     /**
@@ -193,14 +166,14 @@ public class MainController implements Initializable {
         if(eventTriggerer instanceof MenuItem){
             MenuItem buttonPressed = (MenuItem) eventTriggerer;
             if(buttonPressed.getId().equalsIgnoreCase("dateASC"))
-                Collections.sort(listItems, EntriesComparators.getDateComparator());
+                Collections.sort(pad.listItems, EntriesComparators.getDateComparator());
             else if(buttonPressed.getId().equalsIgnoreCase("dateDESC")){
-                Collections.sort(listItems, EntriesComparators.getDateComparator().reversed());
+                Collections.sort(pad.listItems, EntriesComparators.getDateComparator().reversed());
             }
             else if(buttonPressed.getId().equalsIgnoreCase("alphASC"))
-                Collections.sort(listItems, EntriesComparators.getAlphabeticalComparator());
+                Collections.sort(pad.listItems, EntriesComparators.getAlphabeticalComparator());
             else if(buttonPressed.getId().equalsIgnoreCase("alphDESC")){
-                Collections.sort(listItems, EntriesComparators.getAlphabeticalComparator().reversed());
+                Collections.sort(pad.listItems, EntriesComparators.getAlphabeticalComparator().reversed());
             }
         }
     }
@@ -223,7 +196,7 @@ public class MainController implements Initializable {
             String clipBoardStatus = clipboard.getString();
             if (clipboard.hasString() && !clipBoardStatus.equals(currentString) && Utils.isValidURL(clipBoardStatus)) {
                 this.currentString = clipBoardStatus;
-                if (!EntryAlreadyExists(clipBoardStatus)) {
+                if (!pad.EntryAlreadyExists(clipBoardStatus)) {
                     new PageEntry(clipBoardStatus, MainController.this);
                 }
             }
@@ -237,19 +210,8 @@ public class MainController implements Initializable {
     class ChangeListenerTagsFilter implements ChangeListener<Number>{
 
         @Override
-        public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-            //Getting the tag.
-            String filterTag = allTags.get(newValue.intValue());
-            //Creating the new Observable list based on that value.
-            ObservableList<PageEntry> entriesWithTag = FXCollections.observableArrayList();
-            if(filterTag.equals("all"))
-                listURL.setItems(listItems);
-            else {
-                for (PageEntry entry : listItems) {
-                        if (entry.getTags().contains(filterTag)) entriesWithTag.add(entry);
-                }
-                listURL.setItems(entriesWithTag);
-            }
+        public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number tagNewIndex) {
+            listURL.setItems(pad.getFilterTag(tagNewIndex.intValue()));
         }
     }
 
