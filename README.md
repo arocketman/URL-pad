@@ -11,6 +11,7 @@ URL pad is a link fetcher and saver. It is used to store your links as you copy 
 * Sort links by tags.
 * Edit entries .
 * Save a snapshot or image of the page.
+* Sort the list alphabetically or by date Added.
 
 # TODO 
 

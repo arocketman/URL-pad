@@ -183,6 +183,10 @@ public class MainController implements Initializable {
         listItems.remove(index);
     }
 
+    /**
+     * Handles the menu sorting. Checks which MenuItem was clicked and sorts accordingly using the EntrisComparators class.
+     * @param actionEvent
+     */
     @FXML
     public void handleSortMenuButton(ActionEvent actionEvent) {
         Object eventTriggerer = actionEvent.getSource();
