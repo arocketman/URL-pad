@@ -1,12 +1,3 @@
-/**
- *
- * File name : EntryCell.java
- *
- * This class is the controller for the EntryCell.fxml file.
- * Its main purpose is to react to user interaction with the single entry. (e.g : updating tags ) .
- *
- */
-
 package fetcher.controller;
 
 import fetcher.model.PageEntry;
@@ -37,7 +28,14 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-
+/**
+ *
+ * File name : EntryCell.java
+ *
+ * This class is the controller for the EntryCell.fxml file.
+ * Its main purpose is to react to user interaction with the single entry. (e.g : updating tags ) .
+ *
+ */
 public class EntryCell extends ListCell<PageEntry> {
     PageEntry entry;
     MainController controller;

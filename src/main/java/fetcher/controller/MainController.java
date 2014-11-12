@@ -1,13 +1,3 @@
-/**
- *
- * File name : MainController.java
- *
- * This class is the controller for the Main.fxml file.
- * Its main purpose is to handle correctly the ListView containing the urls.
- * It also handles the menu bar and the upper buttons.
- *
- */
-
 package fetcher.controller;
 
 import fetcher.model.EntriesComparators;
@@ -35,9 +25,18 @@ import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.ResourceBundle;
 
+
+/**
+ *
+ * File name : MainController.java
+ *
+ * This class is the controller for the Main.fxml file.
+ * Its main purpose is to handle correctly the ListView containing the urls.
+ * It also handles the menu bar and the upper buttons.
+ *
+ */
 public class MainController implements Initializable {
 
     Clipboard clipboard;

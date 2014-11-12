@@ -1,12 +1,3 @@
-/**
- *
- * File name : Utils.java
- *
- * The utils class is composed of static methods that are used all throughout the program.
- * There are both generic utilities methods such as checking if an element is inside an array and specific methods such as saving the pad.
- *
- */
-
 package fetcher.model;
 
 import com.google.gson.*;
@@ -32,7 +23,6 @@ import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -42,6 +32,14 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 
+/**
+ *
+ * File name : Utils.java
+ *
+ * The utils class is composed of static methods that are used all throughout the program.
+ * There are both generic utilities methods such as checking if an element is inside an array and specific methods such as saving the pad.
+ *
+ */
 public class Utils {
     private static final String LOCATIONS_FILESAVE = "pad.json";
 
