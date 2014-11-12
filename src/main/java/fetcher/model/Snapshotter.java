@@ -1,7 +1,6 @@
 package fetcher.model;
 
 import javafx.application.Platform;
-import javafx.beans.InvalidationListener;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;

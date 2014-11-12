@@ -1,6 +1,7 @@
 package fetcher.controller;
 
 import fetcher.model.EntriesComparators;
+import fetcher.model.Pad;
 import fetcher.model.Utils;
 import fetcher.model.PageEntry;
 import javafx.animation.KeyFrame;
@@ -40,8 +41,9 @@ import java.util.ResourceBundle;
 public class MainController implements Initializable {
 
     Clipboard clipboard;
-    public final ObservableList<PageEntry> listItems = FXCollections.observableArrayList();
-    public final ObservableList<String> allTags = FXCollections.observableArrayList();
+    Pad pad;
+    public ObservableList<PageEntry> listItems = FXCollections.observableArrayList();
+    public ObservableList<String> allTags = FXCollections.observableArrayList();
 
     @FXML
     private ListView<PageEntry> listURL;
@@ -58,6 +60,7 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        pad = new Pad("pad");
         //Setting up a periodic clipboard checker.
         HandleClipboardChange listener = new HandleClipboardChange();
         Timeline repeatTask = new Timeline(new KeyFrame(Duration.millis(200), listener));
@@ -75,7 +78,7 @@ public class MainController implements Initializable {
         tagsListView.setItems(allTags);
         setupButtons();
         //Loading the pad if there's a saved one.
-        if(Utils.savedPadExists())Utils.loadPad(this);
+        if(pad.savedPadExists())pad.loadPad(this);
         tagsListView.getSelectionModel().selectedIndexProperty().addListener(new ChangeListenerTagsFilter());
     }
 
@@ -150,7 +153,7 @@ public class MainController implements Initializable {
 
     @FXML
     private void handleSaveMenuButton(){
-        Utils.savePad(listItems);
+        pad.savePad(listItems);
     }
 
     @FXML

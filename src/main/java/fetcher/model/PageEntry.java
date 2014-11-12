@@ -11,6 +11,7 @@ import org.jsoup.nodes.Document;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -101,6 +102,14 @@ public class PageEntry{
             savedTags.add(new JsonPrimitive(tag));
         savedJson.add("Tags",savedTags);
         return savedJson;
+    }
+
+    public void loadEntry(JsonObject JsonObjectEntry) throws ParseException {
+        setURL(JsonObjectEntry.get("URL").getAsString());
+        setDescription(JsonObjectEntry.get("Description").getAsString());
+        setName(JsonObjectEntry.get("Name").getAsString());
+        setPageSnapshot(JsonObjectEntry.get("pageSnapshot").getAsString());
+        setDateAdded(new SimpleDateFormat("dd MMMM yy , hh:mm:ss", Locale.getDefault()).parse(JsonObjectEntry.get("DateAdded").getAsString()));
     }
 
     public String getURL() {
