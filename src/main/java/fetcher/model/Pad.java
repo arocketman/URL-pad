@@ -13,11 +13,11 @@ import java.util.Set;
 
 /**
  * Abstracts the pad itself. Provides methods for handling the pad, such as saving and loading.
- * It also provides the two Observable lists that are observed by the Controller listviews (one for the tags, one for the entries).
+ * It also provides the two Observable lists that are observed by the Controller ListViews (one for the tags, one for the entries).
  */
 public class Pad {
 
-    String padName;
+    private String padName;
     public ObservableList<PageEntry> listItems;
     public ObservableList<String> allTags;
 
@@ -76,7 +76,7 @@ public class Pad {
 
     /***
      * Loads the json file specified by LOCATIONS_FILESAVE onto the list provided by the user.
-     * @param controller the maincontroller, this is used in the class "Worker" in PageEntry, in order to update the list without blocking the program.
+     * @param controller the MainController, this is used in the class "Worker" in PageEntry, in order to update the list without blocking the program.
      */
     public void loadPad(MainController controller){
         JsonParser parser = new JsonParser();
@@ -100,13 +100,7 @@ public class Pad {
         }
     }
 
-    /**
-     * Makes sure that the file LOCATIONS_FILESAVE exists.
-     * @return true if the file exists.
-     */
-    public boolean savedPadExists() {
-        return (new File(padName).exists());
-    }
+
 
     /**
      * Returns a filtered list based on a tag.
@@ -145,5 +139,9 @@ public class Pad {
             }
         }
         listItems.remove(index);
+    }
+
+    public String getpadName() {
+        return padName;
     }
 }

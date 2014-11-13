@@ -76,10 +76,12 @@ public class PageEntry{
         //Getting description
         if(doc.select("p").first() != null)
             Description = doc.select("p").first().text();
+        //Getting the pad absolute path.
+        final String padFolder = (new File(controller.pad.getpadName())).getParent();
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                pageSnapshot = "file:///" + (new File("")).getAbsolutePath() + "\\urlpadimages\\" + (new Snapshotter(getURL())).getWebsiteSnapshot();
+                pageSnapshot = "file:///" + padFolder + "\\urlpadimages\\" + (new Snapshotter(getURL(),padFolder)).getWebsiteSnapshot();
 
             }
         });

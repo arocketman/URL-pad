@@ -1,0 +1,8 @@
+Button{
+    -fx-background-color:#EB2A22;
+    -fx-margin:10;
+}
+
+HBox{
+    -fx-background-color:#222222;
+}

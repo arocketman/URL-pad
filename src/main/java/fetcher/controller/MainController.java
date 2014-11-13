@@ -39,7 +39,7 @@ import java.util.ResourceBundle;
 public class MainController implements Initializable {
 
     Clipboard clipboard;
-    Pad pad;
+    public Pad pad;
 
     @FXML
     private ListView<PageEntry> listURL;
@@ -54,9 +54,17 @@ public class MainController implements Initializable {
         clipboard = Clipboard.getSystemClipboard();
     }
 
+    public void setPadName(String padName){
+        pad = new Pad(padName);
+        listURL.setItems(pad.listItems);
+        tagsListView.setItems(pad.allTags);
+        //Loading the pad if there's a saved one.
+        if(Utils.FileExists(pad.getpadName()))pad.loadPad(this);
+
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        pad = new Pad("pad");
         //Setting up a periodic clipboard checker.
         HandleClipboardChange listener = new HandleClipboardChange();
         Timeline repeatTask = new Timeline(new KeyFrame(Duration.millis(200), listener));
@@ -70,11 +78,8 @@ public class MainController implements Initializable {
 
             }
         });
-        listURL.setItems(pad.listItems);
-        tagsListView.setItems(pad.allTags);
+
         setupButtons();
-        //Loading the pad if there's a saved one.
-        if(pad.savedPadExists())pad.loadPad(this);
         tagsListView.getSelectionModel().selectedIndexProperty().addListener(new ChangeListenerTagsFilter());
     }
 

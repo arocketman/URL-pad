@@ -14,11 +14,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/Main.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/Launcher.fxml"));
         primaryStage.setTitle("URL pad");
         primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/icon.png")));
-        Scene scene = new Scene(root, 1024, 768);
-        scene.getStylesheets().add(getClass().getResource("/styles/style.css").toExternalForm());
+        Scene scene = new Scene(root, 300, 64);
         primaryStage.setScene(scene);
         primaryStage.show();
         }

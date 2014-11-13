@@ -1,7 +1,6 @@
 package fetcher.controller;
 
 import fetcher.model.PageEntry;
-import fetcher.model.Utils;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;

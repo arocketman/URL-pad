@@ -20,14 +20,15 @@ public class EntriesComparators {
 
     public static Comparator<PageEntry> getAlphabeticalComparator(){
         return new Comparator<PageEntry>() {
+
             @Override
             public int compare(PageEntry o1, PageEntry o2) {
                 if(o1.getName().isEmpty())
                     return 1;
                 else if(o2.getName().isEmpty())
                     return -1;
-                //Bring it to lowercase, removing spaces, removing non-breaking spaces, getting the first character.
-                return o1.getName().toLowerCase().trim().replace("\u00A0","").charAt(0) - o2.getName().toLowerCase().trim().replace("\u00A0","").charAt(0);
+                //Bring it to lowercase, removing spaces, removing non-breaking spaces then comparing.
+                return o1.getName().toLowerCase().trim().replace("\u00A0","").compareTo(o2.getName());
             }
         };
     }

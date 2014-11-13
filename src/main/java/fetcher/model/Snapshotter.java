@@ -34,13 +34,15 @@ public class Snapshotter {
     WebEngine webEngine;
     Rectangle2D screenSize;
     String url;
+    String padPath;
 
     /**
      * Builds the browser based on the given url .
      * @param url the URL of the website to be snapshotted.
      */
-    public Snapshotter(String url){
+    public Snapshotter(String url , String padPath){
         this.url = url;
+        this.padPath = padPath;
         urlStage = new Stage();
         browser = new WebView();
         webEngine = browser.getEngine();
@@ -105,7 +107,7 @@ public class Snapshotter {
      */
     public static boolean saveImage(String destinationFolder , String fileName , BufferedImage renderedImage){
         //Save the snapshot on the hard drive.
-        File imgDir = (new File(destinationFolder));
+        File imgDir = (new File(destinationFolder + "\\urlPadImages"));
         imgDir.mkdir();
         File file = new File(imgDir.getAbsolutePath() + "\\" + fileName);
         try {
@@ -154,7 +156,7 @@ public class Snapshotter {
                 BufferedImage renderedImage = SwingFXUtils.fromFXImage(snapshot, null);
                 //Some math to get a little better thumbnail. Starting x is at 1/4 of the totale page. Goes for a width of half of the screen size to attempt and get the 'core' of the content.
                 renderedImage = renderedImage.getSubimage((int)(screenSize.getWidth() /4),0,(int)( screenSize.getWidth()  / 2 ),(int) screenSize.getHeight() / 2);
-                saveImage("urlpadimages",fileName,renderedImage);
+                saveImage(padPath,fileName,renderedImage);
                 urlStage.close();
                 webEngine.load(null);
             }

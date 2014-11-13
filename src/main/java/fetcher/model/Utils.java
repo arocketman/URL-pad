@@ -2,6 +2,8 @@ package fetcher.model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -61,6 +63,10 @@ public class Utils {
             convertedList.add(elem);
         }
         return convertedList;
+    }
+
+    public static boolean FileExists(String fileName){
+            return (new File(fileName).exists());
     }
 }
 
