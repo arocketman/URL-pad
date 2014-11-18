@@ -81,7 +81,7 @@ public class PageEntry{
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                pageSnapshot = "file:///" + padFolder + "\\urlpadimages\\" + (new Snapshotter(getURL(),padFolder)).getWebsiteSnapshot();
+                pageSnapshot = "file:///" + padFolder + "\\urlpadimages\\" + (new Snapshotter(getURL(),padFolder,controller)).getWebsiteSnapshot();
 
             }
         });

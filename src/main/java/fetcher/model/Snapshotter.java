@@ -1,5 +1,6 @@
 package fetcher.model;
 
+import fetcher.controller.MainController;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -35,14 +36,17 @@ public class Snapshotter {
     Rectangle2D screenSize;
     String url;
     String padPath;
+    MainController controller;
 
     /**
      * Builds the browser based on the given url .
      * @param url the URL of the website to be snapshotted.
+     * @param controller
      */
-    public Snapshotter(String url , String padPath){
+    public Snapshotter(String url, String padPath, MainController controller){
         this.url = url;
         this.padPath = padPath;
+        this.controller = controller;
         urlStage = new Stage();
         browser = new WebView();
         webEngine = browser.getEngine();
@@ -159,6 +163,7 @@ public class Snapshotter {
                 saveImage(padPath,fileName,renderedImage);
                 urlStage.close();
                 webEngine.load(null);
+                controller.refreshListView();
             }
             else if(newValue.equals(Worker.State.FAILED)){
                 //TODO: Send an error message somehow.

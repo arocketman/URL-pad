@@ -9,6 +9,7 @@ import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -95,6 +96,20 @@ public class MainController implements Initializable {
                 //TODO: Doesn't need to be here, probably can be put in the add method itself.
                 if(pad.allTags.size() == 0) pad.allTags.add("all");
          }});
+    }
+
+    /**
+     * Refreshes the list-view setting the listURL to null and then back to the previous status.
+     */
+    public void refreshListView(){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                ObservableList<PageEntry> entries = listURL.getItems();
+                listURL.setItems(null);
+                listURL.setItems(entries);
+            }
+        });
     }
 
     /**

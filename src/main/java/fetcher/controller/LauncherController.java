@@ -22,7 +22,7 @@ import java.io.IOException;
 public class LauncherController {
 
     /**
-     * Creates a box wher ethe user can insert the pad name which will be created.
+     * Creates a box where the user can insert the pad name which will be created.
      * @param event the mouse-click event.
      */
     @FXML
@@ -101,6 +101,7 @@ public class LauncherController {
      */
     private FileChooser buildFileChooser(){
         FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File("."));
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json");
         fileChooser.getExtensionFilters().add(extFilter);
         return fileChooser;
