@@ -1,5 +1,6 @@
 URL-pad
 =======
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/arocketman/URL-pad?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](https://travis-ci.org/arocketman/URL-pad.svg?branch=master)](https://travis-ci.org/arocketman/URL-pad)
 
 URL pad is a link fetcher and saver. It is used to store your links as you copy them and to retrieve them in the future.
