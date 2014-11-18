@@ -131,9 +131,10 @@ public class Snapshotter {
     private String buildFileNameFromUrl(){
         //Retrieving the url string and sanitizing it for it to be saved as a File, it removes the http:// and www. from the url as well.
         String tempName = url.replaceAll("(http://|https://|http://www\\.|www\\.)","").replaceAll("[^a-zA-Z0-9.-]", "_");
-        if(tempName.length() > 10) {
+        if(tempName.length() >= 15) {
             //TODO: Consider grabbing the last part to distinguish the urls. Or just make something up like first 5 letters.. a dash and the last five letters.
-            tempName = tempName.substring(0, 10);
+            int strLength = tempName.length();
+            tempName = tempName.substring(strLength-15, strLength-1);
         }
         tempName += ".png";
         return tempName;
@@ -160,10 +161,10 @@ public class Snapshotter {
                 BufferedImage renderedImage = SwingFXUtils.fromFXImage(snapshot, null);
                 //Some math to get a little better thumbnail. Starting x is at 1/4 of the totale page. Goes for a width of half of the screen size to attempt and get the 'core' of the content.
                 renderedImage = renderedImage.getSubimage((int)(screenSize.getWidth() /4),0,(int)( screenSize.getWidth()  / 2 ),(int) screenSize.getHeight() / 2);
-                saveImage(padPath,fileName,renderedImage);
+                saveImage(padPath, fileName, renderedImage);
+                controller.refreshListView();
                 urlStage.close();
                 webEngine.load(null);
-                controller.refreshListView();
             }
             else if(newValue.equals(Worker.State.FAILED)){
                 //TODO: Send an error message somehow.
