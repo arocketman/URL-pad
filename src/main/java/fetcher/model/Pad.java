@@ -138,7 +138,9 @@ public class Pad {
                 }
             }
         }
+        PageEntry tempEntry = listItems.get(index);
         listItems.remove(index);
+        tempEntry.deleteSnapshot();
     }
 
     public String getpadName() {

@@ -4,6 +4,7 @@ import fetcher.model.EntriesComparators;
 import fetcher.model.Pad;
 import fetcher.model.Utils;
 import fetcher.model.PageEntry;
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -41,6 +42,7 @@ public class MainController implements Initializable {
 
     Clipboard clipboard;
     public Pad pad;
+    Timeline repeatTask;
 
     @FXML
     private ListView<PageEntry> listURL;
@@ -68,7 +70,7 @@ public class MainController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         //Setting up a periodic clipboard checker.
         HandleClipboardChange listener = new HandleClipboardChange();
-        Timeline repeatTask = new Timeline(new KeyFrame(Duration.millis(200), listener));
+        repeatTask = new Timeline(new KeyFrame(Duration.millis(200), listener));
         repeatTask.setCycleCount(Timeline.INDEFINITE);
         repeatTask.play();
         //Setting up the ListView
@@ -195,6 +197,15 @@ public class MainController implements Initializable {
             else if(buttonPressed.getId().equalsIgnoreCase("alphDESC")){
                 Collections.sort(pad.listItems, EntriesComparators.getAlphabeticalComparator().reversed());
             }
+        }
+    }
+
+    public void handleMagneticMenuButton(ActionEvent actionEvent) {
+        if(repeatTask.getStatus() == Animation.Status.RUNNING){
+            repeatTask.pause();
+        }
+        else{
+            repeatTask.play();
         }
     }
 

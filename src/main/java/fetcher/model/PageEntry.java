@@ -11,6 +11,8 @@ import org.jsoup.nodes.Document;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -102,7 +104,7 @@ public class PageEntry{
         savedJson.addProperty("pageSnapshot",pageSnapshot);
         for(String tag : tags)
             savedTags.add(new JsonPrimitive(tag));
-        savedJson.add("Tags",savedTags);
+        savedJson.add("Tags", savedTags);
         return savedJson;
     }
 
@@ -178,6 +180,18 @@ public class PageEntry{
 
     public void deleteTag(String selectedItem) {
         if(tags.contains(selectedItem) && !selectedItem.equalsIgnoreCase("all")) tags.remove(selectedItem);
+    }
+
+    /**
+     * Deletes the page snapshot from the hard drive.
+     */
+    public void deleteSnapshot() {
+        File file = new File(pageSnapshot);
+        try {
+            Files.delete(Paths.get(file.getAbsolutePath()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
