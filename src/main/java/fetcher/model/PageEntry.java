@@ -183,18 +183,6 @@ public class PageEntry{
     }
 
     /**
-     * Deletes the page snapshot from the hard drive.
-     */
-    public void deleteSnapshot() {
-        File file = new File(pageSnapshot);
-        try {
-            Files.delete(Paths.get(file.getAbsolutePath()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
      * Worker class is used to load a single PageEntry from a Thread so that the main program doesn't get stuck.
      */
     class Worker implements Runnable{
