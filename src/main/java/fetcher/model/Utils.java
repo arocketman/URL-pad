@@ -2,6 +2,15 @@ package fetcher.model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -67,6 +76,28 @@ public class Utils {
 
     public static boolean FileExists(String fileName){
             return (new File(fileName).exists());
+    }
+
+    /**
+     * Builds a window popup showing a message.
+     * @param message the message to be shown.
+     */
+    public static void createAlertMessage(String message){
+        final Stage dialogStage = new Stage();
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        VBox vBox = new VBox();
+        vBox.setAlignment(Pos.CENTER);
+        Button ok = new Button("OK");
+        final Label label = new Label(message);
+        vBox.getChildren().addAll(label,ok);
+        ok.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                dialogStage.close();
+            }
+        });
+        dialogStage.setScene(new Scene(vBox));
+        dialogStage.show();
     }
 }
 

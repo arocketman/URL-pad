@@ -15,12 +15,17 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.Duration;
 
@@ -200,7 +205,11 @@ public class MainController implements Initializable {
         }
     }
 
-    public void handleMagneticMenuButton(ActionEvent actionEvent) {
+    /**
+     * Enables/Disables the clipboard listener.
+     */
+    @FXML
+    public void handleMagneticMenuButton() {
         if(repeatTask.getStatus() == Animation.Status.RUNNING){
             repeatTask.pause();
         }
@@ -209,10 +218,71 @@ public class MainController implements Initializable {
         }
     }
 
+    /**
+     *Creates a window where the user can input a URL and inserts it into the list.
+     * @param actionEvent the event that launched the method.
+     */
+    @FXML
+    public void handleAddEntryMenuButton(ActionEvent actionEvent) {
+        final Stage dialogStage = new Stage();
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        VBox vBox = new VBox();
+        vBox.setAlignment(Pos.CENTER);
+        Button ok = new Button("OK");
+        final TextField textfield = new TextField();
+        textfield.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                processEntry(textfield.getText());
+            }
+        });
+        vBox.getChildren().addAll(new Label("URL:"),textfield,ok);
+        ok.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                processEntry(textfield.getText());
+            }
+        });
+        dialogStage.setScene(new Scene(vBox));
+        dialogStage.show();
+    }
+
+    /**
+     * Adds a new entry to the pad.
+     * @param url the url of the entry to be added.
+     * @return true if the entry is successfully created. False otherwise.
+     */
+    public boolean addNewEntry(String url){
+        if(Utils.isValidURL(url) && !pad.EntryAlreadyExists(url)){
+            new PageEntry(url,MainController.this);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Attempts to call the method addNewEntry and shows a message indicating if the entry was successfully added or not.
+     * @param url the entry's url to be added.
+     */
+    public void processEntry(String url){
+        if(addNewEntry(url)){
+            Utils.createAlertMessage("Entry was added");
+        }
+        else{
+            Utils.createAlertMessage("Something went wrong (maybe the entry already exists?). Warning: If you have the magnetic clipboard activated probably the url was just added automatically!");
+        }
+    }
+
+    /**
+     * This class takes care of handling the 'Magnetic clipboard' function. When a url is copied, this class handles the necessary requests to add it to the pad.
+     */
     class HandleClipboardChange implements EventHandler<ActionEvent> {
 
         String currentString;
 
+        /**
+         * Default constructor. Sets currentString to the current clipboard copied text (if any).
+         */
         public HandleClipboardChange() {
             if (clipboard.hasString()) currentString = clipboard.getString();
             else currentString = "";

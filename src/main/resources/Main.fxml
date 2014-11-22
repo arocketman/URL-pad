@@ -14,6 +14,7 @@
                     <menus>
                       <Menu mnemonicParsing="false" text="File">
                         <items>
+                          <MenuItem text="Add new Entry" onAction="#handleAddEntryMenuButton" />
                           <MenuItem mnemonicParsing="false" text="Save Pad" onAction="#handleSaveMenuButton" />
                           <CheckMenuItem selected="true" text="Magnetic clipboard" onAction="#handleMagneticMenuButton" />
                           <MenuItem mnemonicParsing="false" text="Close" onAction="#handleExitMenuButton" />
