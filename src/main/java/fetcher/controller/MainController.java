@@ -246,15 +246,6 @@ public class MainController implements Initializable {
         dialogStage.setScene(new Scene(vBox));
         dialogStage.show();
     }
-    
-    /**
-     * Exports the pad.
-     * @param actionEvent
-     */
-    @FXML
-    public void handleExportMenuButton(ActionEvent actionEvent){
-        pad.exportPad();
-    }
 
     /**
      * Adds a new entry to the pad.
