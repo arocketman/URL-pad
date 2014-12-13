@@ -13,11 +13,21 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Closeable;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  *
@@ -98,6 +108,84 @@ public class Utils {
         });
         dialogStage.setScene(new Scene(vBox));
         dialogStage.show();
+    }
+    
+    /**
+     * Generates a zip file from a given directory.
+     * @param directory the directory to zip.
+     * @param zipfile the zip file to be generated.
+     */
+    public static void zip(File directory, File zipfile){
+        URI base = directory.toURI();
+        Deque<File> queue = new LinkedList<File>();
+        queue.push(directory);
+        OutputStream out = null;
+        try {
+            out = new FileOutputStream(zipfile);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        Closeable res = out;
+        
+        try {
+            ZipOutputStream zipOut = new ZipOutputStream(out);
+            res = zipOut;
+            while (!queue.isEmpty()) {
+                directory = queue.pop();
+                for (File file : directory.listFiles()) {
+                    String name = base.relativize(file.toURI()).getPath();
+                    if (file.isDirectory()) {
+                        queue.push(file);
+                        name = name.endsWith("/") ? name : name + "/";
+                        zipOut.putNextEntry(new ZipEntry(name));
+                    } else {
+                        zipOut.putNextEntry(new ZipEntry(name));
+                        copy(file, zipOut);
+                        zipOut.closeEntry();
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                res.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    /**
+     * Controls the copying of data into zip file
+     * @param file input from directory to be zipped.
+     * @param out zipped output.
+     */
+    private static void copy(File file, OutputStream out){
+        InputStream in = null;
+        try {
+            in = new FileInputStream(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+          byte[] buffer = new byte[1024];
+            while (true) {
+                int readCount = in.read(buffer);
+                if (readCount < 0) {
+                  break;
+                }
+                out.write(buffer, 0, readCount);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                in.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
 

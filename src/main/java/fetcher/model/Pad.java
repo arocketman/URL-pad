@@ -100,7 +100,15 @@ public class Pad {
         }
     }
 
-
+    /**
+     * Exports the list of entries (json file and url screenshot) as a zip file.
+     */
+    public void exportPad(){
+        String padFolderName = (new File(getpadName())).getParent();
+        File directory = new File(padFolderName);
+        File zipfile = new File(padName.replace(".json", "") + ".zip");
+        Utils.zip(directory, zipfile);
+    }
 
     /**
      * Returns a filtered list based on a tag.
