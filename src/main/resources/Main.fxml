@@ -35,11 +35,6 @@
                               <MenuItem fx:id="alphDESC" mnemonicParsing="false" text="Alphabetically - DESC" onAction="#handleSortMenuButton" />
                           </items>
                       </Menu>
-                      <Menu mnemonicParsing="false" text="Export">
-                          <items>
-                              <MenuItem text="Export Pad to ZIP" onAction="#handleExportMenuButton" />
-                          </items>
-                      </Menu>
                   </MenuBar>
                   <HBox alignment="TOP_CENTER" maxHeight="50.0">
                      <children>
