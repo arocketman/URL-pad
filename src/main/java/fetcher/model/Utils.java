@@ -12,7 +12,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.io.File;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -98,6 +100,19 @@ public class Utils {
         });
         dialogStage.setScene(new Scene(vBox));
         dialogStage.show();
+    }
+
+    public static String saveImageFromURL(String URL , String directory){
+        BufferedImage image;
+        try {
+            image = ImageIO.read(new URL(URL));
+            File imageFile = new File(directory + "\\" +UUID.randomUUID().toString() + ".jpg");
+            ImageIO.write(image,"png",imageFile);
+            return imageFile.getName();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
 

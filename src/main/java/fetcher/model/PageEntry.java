@@ -11,8 +11,6 @@ import org.jsoup.nodes.Document;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -83,8 +81,15 @@ public class PageEntry{
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                pageSnapshot = "file:///" + padFolder + "\\urlpadimages\\" + (new Snapshotter(getURL(),padFolder,controller)).getWebsiteSnapshot();
+                String URL = getURL();
+                String dir = padFolder + "\\urlpadimages\\";
+                if(!URL.contains("youtube")) {
+                    pageSnapshot = "file:///" + dir + (new Snapshotter(getURL(), padFolder, controller)).getWebsiteSnapshot();
+                }
+                else{
+                    pageSnapshot = "file:///" + dir + Snapshotter.getYoutubeThumbnail(getURL(),dir);
 
+                }
             }
         });
         return true;

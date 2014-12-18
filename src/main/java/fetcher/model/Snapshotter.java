@@ -23,6 +23,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * This class provides methods to take a snapshot of a given URL.
@@ -172,6 +174,18 @@ public class Snapshotter {
             }
         }
 
+    }
+
+    public static String getYoutubeThumbnail(String youtubeVideoUrl , String saveDirectory){
+        String pattern = "(?:videos\\/|v=)([\\w-]+)";
+        Pattern compiledPattern = Pattern.compile(pattern);
+        Matcher matcher = compiledPattern.matcher(youtubeVideoUrl);
+        if(matcher.find()){
+            String youtubeID = matcher.group().split("=")[1];
+            String thumbnailURL = "http://img.youtube.com/vi/" + youtubeID + "/0.jpg";
+            return Utils.saveImageFromURL(thumbnailURL,saveDirectory);
+        }
+        return null;
     }
 
 }
