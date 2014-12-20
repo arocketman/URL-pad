@@ -7,7 +7,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.io.*;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,6 +25,8 @@ public class Pad {
     public ObservableList<PageEntry> listItems;
     public ObservableList<String> allTags;
 
+    private ArrayList<String> resourcesToDelete;
+
     public Pad(String padName){
         this.padName = padName;
         if(!this.padName.endsWith(".json"))
@@ -28,6 +34,7 @@ public class Pad {
 
         listItems = FXCollections.observableArrayList();
         allTags = FXCollections.observableArrayList();
+        resourcesToDelete = new ArrayList<String>();
     }
 
     /**
@@ -55,10 +62,10 @@ public class Pad {
     /**
      * Saves the list of entries onto a json file.
      */
-    public void savePad(){
+    public void savePad() {
         //TODO: Maybe this method should be called by a thread? The program should not close itself if the thread is still active. (NEEDS testing with lot of entries).
         JsonArray arrayOfEntries = new JsonArray();
-        for(PageEntry entry : listItems){
+        for (PageEntry entry : listItems) {
             JsonObject singleEntry = entry.saveEntry();
             arrayOfEntries.add(singleEntry);
         }
@@ -71,7 +78,28 @@ public class Pad {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+        deleteUnusedImages();
+    }
 
+    /**
+     * Deletes all the images within the resourcesToDelete array.
+     * Once an entry is deleted, the image associated will be deleted with this method as soon as the user hits the save button.
+     */
+    public void deleteUnusedImages(){
+        //Deleting images associated with deleted pictures.
+        for (String path : resourcesToDelete) {
+            if(path.startsWith("file:///")){
+                path = path.replace("file:///","");
+            }
+            Path pathToFile = FileSystems.getDefault().getPath(path);
+            try {
+                Files.delete(pathToFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        resourcesToDelete.clear();
     }
 
     /***
@@ -139,6 +167,8 @@ public class Pad {
             }
         }
         PageEntry tempEntry = listItems.get(index);
+        //Adding the image of the deleted entry to the array of resources to be deleted. Such image will be deleted upon saving.
+        resourcesToDelete.add(tempEntry.getPageSnapshot());
         listItems.remove(index);
     }
 
