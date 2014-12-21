@@ -163,6 +163,14 @@ public class MainController implements Initializable {
     private void handleSaveMenuButton(){
         pad.savePad();
     }
+    
+    /**
+     * Exports the pad as a ZIP file.
+     */
+    @FXML
+    private void handleExportMenuButton() {
+        pad.exportPad();
+    }
 
     /**
      * Clear the tags from the selected entry.

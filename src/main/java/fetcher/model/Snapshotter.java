@@ -113,9 +113,9 @@ public class Snapshotter {
      */
     public static boolean saveImage(String destinationFolder , String fileName , BufferedImage renderedImage){
         //Save the snapshot on the hard drive.
-        File imgDir = (new File(destinationFolder + "\\urlPadImages"));
+        File imgDir = (new File(destinationFolder + "//urlPadImages"));
         imgDir.mkdir();
-        File file = new File(imgDir.getAbsolutePath() + "\\" + fileName);
+        File file = new File(imgDir.getAbsolutePath() + "//" + fileName);
         try {
             ImageIO.write(renderedImage, "png", file);
             return true;

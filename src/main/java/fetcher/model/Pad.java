@@ -13,7 +13,10 @@ import java.nio.file.Path;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * Abstracts the pad itself. Provides methods for handling the pad, such as saving and loading.
@@ -128,7 +131,41 @@ public class Pad {
         }
     }
 
-
+    /**
+     * Exports json file and images directory as a ZIP file.
+     */
+    public void exportPad() {
+        final int BUFFER = 2048;
+        byte data[] = new byte[BUFFER];
+        
+        File jsonFile = new File(padName);
+        File imageDirectory = new File((new File(padName)).getParent() + "//urlPadImages"); 
+        List<File> files = Utils.filesList(jsonFile, imageDirectory);
+                
+        try {
+            FileOutputStream fileExport = new FileOutputStream(padName.replace(".json", ".zip"));
+            ZipOutputStream zipExport = new ZipOutputStream(fileExport);
+            
+            for (File file : files) {
+                System.out.println("Adding " + file.getName() + " to " + padName.replace(".json", ".zip"));
+                FileInputStream input = new FileInputStream(file);
+                zipExport.putNextEntry(new ZipEntry(file.getAbsolutePath()));
+                
+                int count;
+                BufferedInputStream origin = new BufferedInputStream(input, BUFFER);
+                while ((count = origin.read(data, 0, BUFFER)) != -1) {
+                    zipExport.write(data, 0, count);
+                }
+                origin.close();
+            }
+            zipExport.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+    }
 
     /**
      * Returns a filtered list based on a tag.

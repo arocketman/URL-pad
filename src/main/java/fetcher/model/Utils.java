@@ -114,5 +114,28 @@ public class Utils {
         }
         return null;
     }
+    
+    /**
+     * Combines json and image files into single file list.
+     * @param jsonFile 
+     * @param imageDirectory
+     * @return the combined pad files.
+     */
+    public static List<File> filesList(File jsonFile, File imageDirectory) {
+        List<File> files = new ArrayList<File>();
+        
+        files.add(jsonFile); 
+        
+        if (imageDirectory.exists() && imageDirectory.isDirectory()) {
+            for (File image : imageDirectory.listFiles()){
+                if (image.exists() && image.isFile())
+                    files.add(image);
+                else
+                    System.out.println("Image " + image + " could not be found.");
+            }
+        } else
+            System.out.println("Directory " + imageDirectory.getName() + " could not be found.");
+        return files;
+    }
 }
 
