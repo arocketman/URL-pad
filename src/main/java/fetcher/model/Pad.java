@@ -137,7 +137,7 @@ public class Pad {
     public void exportPad() {
         final int BUFFER = 2048;
         byte data[] = new byte[BUFFER];
-        
+
         File jsonFile = new File(padName);
         File imageDirectory = new File((new File(padName)).getParent() + "//urlPadImages"); 
         List<File> files = Utils.filesList(jsonFile, imageDirectory);
@@ -147,9 +147,8 @@ public class Pad {
             ZipOutputStream zipExport = new ZipOutputStream(fileExport);
             
             for (File file : files) {
-                System.out.println("Adding " + file.getName() + " to " + padName.replace(".json", ".zip"));
                 FileInputStream input = new FileInputStream(file);
-                zipExport.putNextEntry(new ZipEntry(file.getAbsolutePath()));
+                zipExport.putNextEntry(new ZipEntry(file.getName()));
                 
                 int count;
                 BufferedInputStream origin = new BufferedInputStream(input, BUFFER);

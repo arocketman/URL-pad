@@ -82,7 +82,7 @@ public class PageEntry{
             @Override
             public void run() {
                 String URL = getURL();
-                String dir = padFolder + "//urlpadimages";
+                String dir = padFolder + File.separator + "urlpadimages" + File.separator;
                 if(!URL.contains("youtube")) {
                     pageSnapshot = "file:///" + dir + (new Snapshotter(getURL(), padFolder, controller)).getWebsiteSnapshot();
                 }
