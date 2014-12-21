@@ -5,7 +5,9 @@
  */
 package fetcher.model;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import javafx.collections.FXCollections;
@@ -166,5 +168,22 @@ public class UtilsTest {
     }
     
     // TODO: testFileExistsValid()
+    
+    /**
+     * Test of fileList method.
+     * 
+     * @author Mike Caverly
+     */
+    @Test
+    public void testFileList() {
+        //given
+        File file = new File("dummy");
+        List<File> testList = new ArrayList<File>();
+        testList.add(file);
+        //when
+        List result = Utils.filesList(file, file);
+        //then
+        assertEquals(testList, result);
+    }
     
 }
