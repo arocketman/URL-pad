@@ -139,7 +139,7 @@ public class Pad {
         byte data[] = new byte[BUFFER];
 
         File jsonFile = new File(padName);
-        File imageDirectory = new File((new File(padName)).getParent() + File.separator + "urlPadImages");
+        File imageDirectory = new File((new File(padName)).getParent() + File.separator + "urlpadimages" + File.separator);
         List<File> files = Utils.filesList(jsonFile, imageDirectory);
                 
         try {
@@ -148,7 +148,10 @@ public class Pad {
             
             for (File file : files) {
                 FileInputStream input = new FileInputStream(file);
-                zipExport.putNextEntry(new ZipEntry(file.getName()));
+                if(file.getName().endsWith(".json"))
+                    zipExport.putNextEntry(new ZipEntry(file.getName()));
+                else
+                    zipExport.putNextEntry(new ZipEntry(Utils.IMAGES_SUBFOLDER + File.separator + file.getName()));
 
                 int count;
                 BufferedInputStream origin = new BufferedInputStream(input, BUFFER);

@@ -113,7 +113,7 @@ public class Snapshotter {
      */
     public static boolean saveImage(String destinationFolder , String fileName , BufferedImage renderedImage){
         //Save the snapshot on the hard drive.
-        File imgDir = (new File(destinationFolder + File.separator + "urlPadImages"));
+        File imgDir = (new File(destinationFolder + File.separator + Utils.IMAGES_SUBFOLDER));
         imgDir.mkdir();
         File file = new File(imgDir.getAbsolutePath() + File.separator + fileName);
         try {

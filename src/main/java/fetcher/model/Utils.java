@@ -31,6 +31,8 @@ import java.util.List;
  */
 public class Utils {
 
+    public final static String IMAGES_SUBFOLDER = "urlpadimages";
+
     /**
      * Opens up a connection with the given URL and returns true if the response code is 200 (success)
      * @param URL_String the URL to test
