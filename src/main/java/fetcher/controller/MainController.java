@@ -179,7 +179,37 @@ public class MainController implements Initializable {
     private void handleClearTagsMenuButton(){
         if (listURL.getSelectionModel().getSelectedItem() == null) return;
         listURL.getSelectionModel().getSelectedItem().clearTags();
-        }
+        refreshListView();
+    }
+
+    /**
+     * Remove a specific tag.
+     */
+    @FXML
+    private void handleRemoveTagMenuButton(){
+        if (listURL.getSelectionModel().getSelectedItem() == null) return;
+        //Building a pop-up
+        final Stage dialogStage = new Stage();
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        VBox vBox = new VBox();
+        vBox.setAlignment(Pos.CENTER);
+        Button ok = new Button("OK");
+        final ComboBox<String> comboBox = new ComboBox<String>();
+        comboBox.setItems(Utils.convertToObservableList(listURL.getSelectionModel().getSelectedItem().getTags()));
+        vBox.getChildren().addAll(new Label("Tag:"),comboBox,ok);
+        //Handler of the OK pressing button. Gets the tag and adds it to the existing ones if it doesn't already exists.
+        ok.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                //Clearing the tag:
+                listURL.getSelectionModel().getSelectedItem().deleteTag(comboBox.getSelectionModel().getSelectedItem());
+                dialogStage.close();
+                refreshListView();
+            }
+        });
+        dialogStage.setScene(new Scene(vBox));
+        dialogStage.show();
+    }
 
     /**
      * This method deletes an entry from the listView.
