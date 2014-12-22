@@ -1,16 +1,20 @@
 package fetcher.controller;
 
 import fetcher.Main;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import javafx.scene.layout.VBox;
+import javafx.stage.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,7 +44,7 @@ public class LauncherController {
      * @param stage the launcher stage to be closed.
      */
     private void startPadMain(String padName, Stage stage){
-        Stage primaryStage = new Stage(StageStyle.DECORATED);
+        final Stage primaryStage = new Stage(StageStyle.DECORATED);
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/Main.fxml"));
         primaryStage.setTitle("URL pad");
         primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("/images/icon.png")));
@@ -55,6 +59,36 @@ public class LauncherController {
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/styles/style.css").toExternalForm());
         primaryStage.setScene(scene);
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                event.consume();
+                final Stage dialogStage = new Stage();
+                dialogStage.initModality(Modality.WINDOW_MODAL);
+                VBox vBox = new VBox();
+                vBox.setAlignment(Pos.CENTER);
+                Button yes = new Button("Yes");
+                Button no = new Button("No");
+                final Label label = new Label("Are you sure you want to quit? Any un-saved changes will be lost.");
+                vBox.getChildren().addAll(label,yes,no);
+                yes.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        dialogStage.close();
+                        primaryStage.close();
+                    }
+                });
+                no.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        dialogStage.close();
+                    }
+                });
+                dialogStage.setScene(new Scene(vBox));
+                dialogStage.show();
+            }
+        });
+
         primaryStage.show();
         stage.close();
     }
