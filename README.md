@@ -14,14 +14,14 @@ URL pad is a link fetcher and saver. It is used to store your links as you copy 
 * Save a snapshot or image of the page.
 * Sort the list alphabetically or by date Added.
 * Support for multiple pads. Save and load them from any folder.
+* Add loading screen when loading a json.
+* Export pad feature (So that it can be loaded on another computer without losing the images).
 
 # TODO 
 
-* Add loading screen when loading a json.
 * Lock a pad, encrypt it and secure it with a password.
 * Background mode, the program won't bother you at every link being saved.
 * Search feature
-* Export pad feature (So that it can be loaded on another computer without losing the images).
 
 # Dependencies 
 
